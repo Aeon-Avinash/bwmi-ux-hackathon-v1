@@ -1,0 +1,391 @@
+{
+  "$meta": {
+    "now": "2026-08-27T09:48:00+05:30",
+    "timezone": "Asia/Kolkata",
+    "note": "Frozen portal clock. Asha amounts are locked. Conservation on every screen: held + requested + unlocated (+ returned, at terminal) = case total. ELAPSED from theft; AGE from each slip's own timestamp. Clocks are computed, never hand-copied."
+  },
+  "nextSerial": 200,
+  "records": [
+    {
+      "id": "asha-day2",
+      "ack": "25082026000147",
+      "boundary": "TRACKABLE",
+      "categoryTrack": "financial",
+      "categoryLabel": "Financial Fraud",
+      "subcategory": "UPI fraud",
+      "complainant": "Asha K.",
+      "mobile": "9876504412",
+      "state": "MH",
+      "district": "Pune",
+      "policeStation": "Sector-21 Cyber PS (mock)",
+      "day": 2,
+      "status": "MONEY_MAPPED",
+      "totalPaise": 9850000,
+      "theftAt": "2026-08-25T21:12:00+05:30",
+      "firstReportAt": "2026-08-25T21:34:00+05:30",
+      "filedAt": "2026-08-25T21:34:00+05:30",
+      "lastConfirmedAt": "2026-08-26T00:41:00+05:30",
+      "channel": "UPI / Saral Bank",
+      "narrative": "₹98,500 debited from Saral Bank A/c ••4821 to kubertraders@dvb after a prize message.",
+      "smsSample": "Dear Customer, Rs.98,500 debited from A/c XX4821 on 25-08-25 at 21:12 towards UPI/CRM/kubertraders@dvb. If not done by you, call 1930 or report on cybercrime.gov.in -Saral Bank",
+      "sourceSms": "SBL/TP/8842131",
+      "helplineLog": "HELPLINE_LOG_4417",
+      "split": {
+        "held": 3100000,
+        "requested": 4250000,
+        "unlocated": 2500000,
+        "returned": 0,
+        "leak": 50000
+      },
+      "institutions": [
+        {
+          "role": "victim",
+          "name": "Saral Bank",
+          "account": "••4821",
+          "amount": 9850000,
+          "state": "REPORTED"
+        },
+        {
+          "role": "first-hop",
+          "name": "Dhanvir Co-op Bank",
+          "account": "Kuber Traders ••7734",
+          "handle": "kubertraders@dvb",
+          "received": 9850000,
+          "held": 3100000,
+          "movedOnward": 6750000,
+          "state": "PROVISIONALLY_HELD",
+          "eventCode": "AMOUNT_HOLD_PARTIAL",
+          "holdAt": "2026-08-26T00:41:00+05:30",
+          "flags": {
+            "amountHold": { "on": true, "amount": 3100000, "since": "2026-08-26T00:41:00+05:30" },
+            "digitalBanking": { "on": true, "since": "2026-08-26T00:41:00+05:30" },
+            "seizure": { "on": false }
+          }
+        },
+        {
+          "role": "wallet",
+          "name": "PayMate Wallet",
+          "account": "PayMate",
+          "requested": 4250000,
+          "state": "FREEZE_REQUESTED",
+          "note": "₹500 PRE_HOLD_LEAK is permanently unrecoverable and is always shown. At Day 2 it still sits inside the freeze-requested ₹42,500; it is not rounded out of the total."
+        }
+      ],
+      "deadlines": [
+        {
+          "code": "DEADLINE",
+          "kind": "full-complaint-24h",
+          "dueAt": "2026-08-26T21:34:00+05:30",
+          "citation": "cited: helpline SOP — 24h full-complaint rule",
+          "met": true
+        },
+        {
+          "code": "DEADLINE",
+          "kind": "hold-slip-lapse",
+          "dueAt": "2026-08-28T21:12:00+05:30",
+          "citation": "printed on the hold slip — 72 hours from the theft",
+          "met": false
+        }
+      ],
+      "events": [
+        {
+          "at": "2026-08-25T21:12:00+05:30",
+          "author": "Saral Bank · SMS",
+          "code": "REPORTED",
+          "provenance": "CONFIRMED",
+          "text": "₹98,500 debited from A/c ••4821 by UPI to kubertraders@dvb.",
+          "band": "confirmed"
+        },
+        {
+          "at": "2026-08-25T21:34:00+05:30",
+          "author": "NCRP intake",
+          "code": "COMPLAINT_FILED",
+          "provenance": "CONFIRMED",
+          "text": "First report slip and acknowledgement 25082026000147 issued. 22 minutes after the debit.",
+          "band": "confirmed"
+        },
+        {
+          "at": "2026-08-25T21:40:00+05:30",
+          "author": "1930 helpline",
+          "code": "HELPLINE_LOG",
+          "provenance": "CONFIRMED",
+          "text": "Helpline logged the case and routed it to I4C (HELPLINE_LOG_4417).",
+          "band": "confirmed"
+        },
+        {
+          "at": "2026-08-25T23:02:00+05:30",
+          "author": "NCRP · SMS",
+          "code": "COMPLAINT_FILED",
+          "provenance": "CONFIRMED",
+          "text": "Portal confirmed registration by SMS.",
+          "band": "confirmed"
+        },
+        {
+          "at": "2026-08-26T00:41:00+05:30",
+          "author": "Dhanvir Bank",
+          "code": "AMOUNT_HOLD_PARTIAL",
+          "provenance": "ASSUMPTION",
+          "text": "Dhanvir Co-op Bank put ₹31,000 on hold in “Kuber Traders” ••7734 and suspended its digital banking.",
+          "band": "reconstructed"
+        },
+        {
+          "at": "2026-08-26T00:41:00+05:30",
+          "author": "ledger",
+          "code": "MOVED_ONWARD",
+          "provenance": "ASSUMPTION",
+          "text": "₹67,500 moved onward from Dhanvir — freeze requested ₹42,500 at PayMate Wallet, ₹25,000 unlocated.",
+          "band": "reconstructed"
+        },
+        {
+          "at": "2026-08-26T00:41:00+05:30",
+          "author": "PayMate Wallet",
+          "code": "FREEZE_REQUESTED",
+          "provenance": "ASSUMPTION",
+          "text": "Hold request sent to PayMate Wallet for ₹42,500. A ₹500 PRE_HOLD_LEAK is already gone and is permanently unrecoverable.",
+          "band": "reconstructed"
+        }
+      ]
+    },
+    {
+      "id": "anon-wc-obscene",
+      "ack": "REF-260826-0413",
+      "boundary": "CONFIRMATION_ONLY",
+      "categoryTrack": "anonymous",
+      "categoryLabel": "Sexually Obscene material",
+      "complainant": null,
+      "mobile": null,
+      "day": null,
+      "status": "ANONYMOUS_RECEIVED",
+      "filedAt": "2026-08-26T04:13:00+05:30",
+      "narrative": "Anonymous Women/Children report. Confirmation only.",
+      "events": [
+        {
+          "at": "2026-08-26T04:13:00+05:30",
+          "author": "NCRP anonymous intake",
+          "code": "ANONYMOUS_RECEIVED",
+          "provenance": "CONFIRMED",
+          "text": "Anonymous report received under Sexually Obscene material. Confirmation reference REF-260826-0413 issued. Cannot be tracked.",
+          "band": "confirmed"
+        }
+      ]
+    },
+    {
+      "id": "ravi-day0",
+      "ack": "27082026000101",
+      "boundary": "TRACKABLE",
+      "categoryTrack": "financial",
+      "categoryLabel": "Financial Fraud",
+      "subcategory": "UPI fraud",
+      "complainant": "Ravi S.",
+      "mobile": "9810027001",
+      "state": "KA",
+      "district": "Bengaluru Urban",
+      "policeStation": "Cyber Crime PS (mock)",
+      "day": 0,
+      "status": "REPORTED",
+      "totalPaise": 2400000,
+      "theftAt": "2026-08-27T07:40:00+05:30",
+      "firstReportAt": "2026-08-27T08:10:00+05:30",
+      "filedAt": "2026-08-27T08:10:00+05:30",
+      "lastConfirmedAt": "2026-08-27T08:10:00+05:30",
+      "channel": "UPI",
+      "narrative": "₹24,000 UPI debit this morning. Filed; no institution has written back.",
+      "split": {
+        "held": 0,
+        "requested": 0,
+        "unlocated": 2400000,
+        "returned": 0,
+        "leak": 0
+      },
+      "deadlines": [
+        {
+          "code": "DEADLINE",
+          "kind": "full-complaint-24h",
+          "dueAt": "2026-08-28T08:10:00+05:30",
+          "citation": "cited: helpline SOP — 24h full-complaint rule",
+          "met": true
+        }
+      ],
+      "events": [
+        {
+          "at": "2026-08-27T07:40:00+05:30",
+          "author": "complainant",
+          "code": "REPORTED",
+          "provenance": "CONFIRMED",
+          "text": "₹24,000 left the account by UPI.",
+          "band": "confirmed"
+        },
+        {
+          "at": "2026-08-27T08:10:00+05:30",
+          "author": "NCRP intake",
+          "code": "COMPLAINT_FILED",
+          "provenance": "CONFIRMED",
+          "text": "Acknowledgement 27082026000101 issued. No hold yet.",
+          "band": "confirmed"
+        }
+      ]
+    },
+    {
+      "id": "meera-day9",
+      "ack": "18082026000109",
+      "boundary": "TRACKABLE",
+      "categoryTrack": "financial",
+      "categoryLabel": "Financial Fraud",
+      "subcategory": "UPI fraud",
+      "complainant": "Meera P.",
+      "mobile": "9822011809",
+      "state": "MH",
+      "district": "Mumbai City",
+      "policeStation": "Cyber PS (mock)",
+      "day": 9,
+      "status": "TWO_HOLD_FANOUT",
+      "totalPaise": 5840000,
+      "theftAt": "2026-08-18T10:05:00+05:30",
+      "firstReportAt": "2026-08-18T11:20:00+05:30",
+      "filedAt": "2026-08-18T11:20:00+05:30",
+      "lastConfirmedAt": "2026-08-27T08:00:00+05:30",
+      "channel": "UPI",
+      "narrative": "₹58,400 UPI fraud. Two holds on one mule account: Hold A released today, Hold B still standing. States do not merge.",
+      "split": {
+        "held": 1640000,
+        "requested": 0,
+        "unlocated": 4200000,
+        "returned": 0,
+        "leak": 0
+      },
+      "holds": [
+        {
+          "id": "A",
+          "amount": 4200000,
+          "state": "HOLD_RELEASED",
+          "placedAt": "2026-08-18T22:10:00+05:30",
+          "releasedAt": "2026-08-27T08:00:00+05:30",
+          "slip": "HB/2026/44190",
+          "note": "Released. This does not close the complaint and does not clear Hold B."
+        },
+        {
+          "id": "B",
+          "amount": 1640000,
+          "state": "PROVISIONALLY_HELD",
+          "placedAt": "2026-08-19T14:00:00+05:30",
+          "releasedAt": null,
+          "slip": null,
+          "note": "Still standing. Source of the hold is unknown. No date promised."
+        }
+      ],
+      "events": [
+        {
+          "at": "2026-08-18T10:05:00+05:30",
+          "author": "complainant bank · SMS",
+          "code": "REPORTED",
+          "provenance": "CONFIRMED",
+          "text": "₹58,400 debited by UPI.",
+          "band": "confirmed"
+        },
+        {
+          "at": "2026-08-18T11:20:00+05:30",
+          "author": "NCRP intake",
+          "code": "COMPLAINT_FILED",
+          "provenance": "CONFIRMED",
+          "text": "Acknowledgement 18082026000109 issued.",
+          "band": "confirmed"
+        },
+        {
+          "at": "2026-08-18T22:10:00+05:30",
+          "author": "mule bank",
+          "code": "PROVISIONALLY_HELD",
+          "provenance": "CONFIRMED",
+          "text": "Hold A · ₹42,000 placed (slip HB/2026/44190).",
+          "band": "confirmed"
+        },
+        {
+          "at": "2026-08-19T14:00:00+05:30",
+          "author": "mule bank",
+          "code": "PROVISIONALLY_HELD",
+          "provenance": "ASSUMPTION",
+          "text": "Hold B · ₹16,400 standing. No slip received.",
+          "band": "reconstructed"
+        },
+        {
+          "at": "2026-08-27T08:00:00+05:30",
+          "author": "mule bank",
+          "code": "HOLD_RELEASED",
+          "provenance": "CONFIRMED",
+          "text": "Hold A released. ₹42,000 is no longer held. Hold B is untouched.",
+          "band": "confirmed"
+        }
+      ]
+    },
+    {
+      "id": "farhan-day12",
+      "ack": "15082026000112",
+      "boundary": "TRACKABLE",
+      "categoryTrack": "financial",
+      "categoryLabel": "Financial Fraud",
+      "subcategory": "UPI fraud",
+      "complainant": "Farhan Q.",
+      "mobile": "9900015012",
+      "state": "DL",
+      "district": "New Delhi",
+      "policeStation": "Cyber PS (mock)",
+      "day": 12,
+      "status": "CITIZEN_CONFIRM_PENDING",
+      "totalPaise": 4200000,
+      "theftAt": "2026-08-15T16:22:00+05:30",
+      "firstReportAt": "2026-08-15T16:48:00+05:30",
+      "filedAt": "2026-08-15T16:48:00+05:30",
+      "lastConfirmedAt": "2026-08-27T09:10:00+05:30",
+      "channel": "UPI",
+      "narrative": "₹42,000 returned via interim custody. Close is gated on complainant confirmation.",
+      "split": {
+        "held": 0,
+        "requested": 0,
+        "unlocated": 0,
+        "returned": 4200000,
+        "leak": 0
+      },
+      "closeGated": true,
+      "citizenConfirmedAt": null,
+      "events": [
+        {
+          "at": "2026-08-15T16:22:00+05:30",
+          "author": "complainant bank · SMS",
+          "code": "REPORTED",
+          "provenance": "CONFIRMED",
+          "text": "₹42,000 debited by UPI.",
+          "band": "confirmed"
+        },
+        {
+          "at": "2026-08-15T16:48:00+05:30",
+          "author": "NCRP intake",
+          "code": "COMPLAINT_FILED",
+          "provenance": "CONFIRMED",
+          "text": "Acknowledgement 15082026000112 issued.",
+          "band": "confirmed"
+        },
+        {
+          "at": "2026-08-27T09:10:00+05:30",
+          "author": "I4C / interim custody",
+          "code": "INTERIM_CUSTODY",
+          "provenance": "CONFIRMED",
+          "text": "₹42,000 returned via interim custody. Close waits on complainant confirmation.",
+          "band": "confirmed"
+        },
+        {
+          "at": "2026-08-27T09:10:00+05:30",
+          "author": "ledger",
+          "code": "RETURNED_TO_CITIZEN",
+          "provenance": "CONFIRMED",
+          "text": "Money-state is RETURNED_TO_CITIZEN. The complaint is not closed until you confirm receipt.",
+          "band": "confirmed"
+        }
+      ]
+    }
+  ],
+  "demoMobiles": {
+    "9876504412": "Asha K.",
+    "9810027001": "Ravi S.",
+    "9822011809": "Meera P.",
+    "9900015012": "Farhan Q."
+  }
+}

@@ -1,0 +1,50 @@
+Packet B — Portal Shell, Boundaries & Fixtures
+Output folder: shell-boundaries-fixtures/
+
+FIRST-HOUR (unblocks the multilingual pack)
+  data/strings.en.json     All user-facing English copy, nested keys.
+  data/codes.json          codes[] — machine labels, never translate.
+
+FIXTURES
+  data/ledger.json         Mock ledger:
+                           (1) Asha K. financial Day-2, ack 25082026000147
+                               held ₹31,000 + freeze-requested ₹42,500 + unlocated ₹25,000
+                               = ₹98,500; ₹500 PRE_HOLD_LEAK always shown
+                           (2) Anonymous W/C, REF-260826-0413, Sexually Obscene material,
+                               CONFIRMATION_ONLY
+                           (3) Trackable: Day 0 27082026000101, Day 9 18082026000109
+                               (two-hold fan-out), Day 12 15082026000112 (returned,
+                               close gated)
+                           (4) OTP: whatever 6-digit code the mock SMS toast displays
+
+SHELL
+  index.html               Unguided live-like portal (hash routes)
+  assets/spine.css         Substrate contract (imported, not rewritten)
+  assets/shell.css         B2 gov chrome + interiors
+  assets/i18n.js
+  assets/ledger.js
+  assets/app.js
+
+SITEMAP
+  #/                       Home (hero, three cards, ticker, learning corner)
+  #/acknowledge            Identical interstitial, exact coded text (all three cards)
+  #/login                  Name + mobile → OTP
+  #/checklist              Pre-complaint checklist (exact live list)
+  #/complaint              Unguided full form
+  #/anonymous              Anonymous form (W/C card only; four verbatim categories)
+  #/filed                  Trackable confirmation + ack
+  #/anonymous-filed        Confirmation-only + cannot-be-tracked
+  #/track                  Ack + registered-mobile OTP
+  #/status                 Case status from ledger
+  #/suspect                Stub
+  #/learn and four notes   Stubs, one screen deep
+  #/faq                    Stub
+  Footer stubs             contact, feedback, policies, privacy, disclaimer, a11y
+
+Track fixtures (OTP arrives as on-screen mock SMS):
+  25082026000147  mobile 9876504412  Asha Day-2
+  27082026000101  mobile 9810027001  Day 0
+  18082026000109  mobile 9822011809  Day 9
+  15082026000112  mobile 9900015012  Day 12
+  REF-260826-0413                    anonymous-boundary message
+  any other number                   “No record found”

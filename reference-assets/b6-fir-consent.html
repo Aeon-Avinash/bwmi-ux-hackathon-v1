@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Case Spine — Beat 6 · FIR e-consent [PROPOSED]</title>
+<link rel="stylesheet" href="assets/spine.css">
+<style>
+.two-col{display:grid;grid-template-columns:1.2fr .9fr;gap:18px;margin-top:22px;align-items:start}
+@media (max-width:820px){.two-col{grid-template-columns:1fr}}
+.panel-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px clamp(20px,3vw,26px)}
+.panel-card > .pc-title{font-size:12px;font-weight:750;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.fact-row{display:flex;gap:12px;padding:13px 0;border-bottom:1px dashed var(--border-strong);align-items:flex-start}
+.fact-row:last-of-type{border-bottom:0}
+.fact-row .f-dot{width:10px;height:10px;border-radius:3px;background:var(--c-confirm);flex:none;margin-top:7px}
+.fact-row .f-txt{flex:1;font-size:15px;line-height:1.5}
+.fact-row .f-txt b{color:var(--fg-strong)}
+.fact-row .f-src{display:block;font-size:12.5px;color:var(--muted);margin-top:3px}
+.excluded-note{
+  margin-top:14px;background:oklch(97% 0.008 295);border:1.5px dashed color-mix(in oklab, var(--c-assumed) 45%, transparent);
+  border-radius:12px;padding:13px 16px;font-size:13.5px;color:var(--c-assumed);line-height:1.55;
+}
+.excluded-note b{color:var(--c-assumed)}
+.statement-full{margin-top:14px;border-top:1px solid var(--border);padding-top:12px}
+.statement-full .acc-b{line-height:1.65;font-size:14px}
+.sign-row{margin-top:16px}
+.otp-row{display:none;gap:9px;margin-top:14px;align-items:center;flex-wrap:wrap}
+.otp-row.show{display:flex;animation:fadein .2s}
+.otp-row input{
+  width:46px;height:54px;text-align:center;font-family:var(--mono);font-size:21px;font-weight:700;
+  border:1.5px solid var(--border-strong);border-radius:10px;background:var(--sunken);color:var(--fg-strong);
+}
+.otp-row input:focus{outline:none;border-color:var(--accent)}
+.signed-panel{display:none;margin-top:4px}
+.signed-panel.show{display:block;animation:fadein .25s cubic-bezier(.23,1,.32,1)}
+.signed-head{display:flex;align-items:flex-start;gap:12px}
+.signed-head svg{flex:none;margin-top:3px;color:var(--c-confirm)}
+.signed-head h3{font-size:20px;font-weight:780;color:var(--fg-strong)}
+.signed-head p{color:var(--muted);font-size:14.5px;margin-top:3px;line-height:1.55}
+.after-list{margin-top:16px;border-top:1px solid var(--border);padding-top:14px;font-size:14.5px;color:var(--muted);line-height:1.7}
+.after-list b{color:var(--fg)}
+.consent-bullets{list-style:none;margin-top:14px;display:flex;flex-direction:column;gap:10px}
+.consent-bullets li{display:flex;gap:10px;font-size:14.5px;line-height:1.55;color:var(--fg)}
+.consent-bullets li::before{content:"";width:8px;height:8px;border-radius:3px;background:var(--accent);flex:none;margin-top:8px}
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="row">
+    <div class="wordmark"><span class="mark" aria-hidden="true"></span>Case Spine</div>
+    <span class="daytag">DAY 2 · WED 27 AUG · 9:52 AM</span>
+    <span class="spacer"></span>
+    <div class="lang-stub" aria-label="Language"><span class="on">EN</span><button type="button" id="hiBtn">हिं</button><div class="lang-note" id="langNote" role="status">हिंदी संस्करण जल्द — coming with the Bhashini rollout.</div></div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <nav class="jrail" aria-label="Your case journey">
+    <ol>
+      <li class="done"><a href="b1-capture.html"><span class="dot"></span><span class="lbl">Reported</span></a></li>
+      <li class="done"><a href="b2-acknowledge.html"><span class="dot"></span><span class="lbl">Logged</span></a></li>
+      <li class="done"><a href="b3-process-map.html"><span class="dot"></span><span class="lbl">Next steps</span></a></li>
+      <li class="gap" aria-hidden="true"></li>
+      <li class="done"><a href="case-overview.html"><span class="dot"></span><span class="lbl">Money mapped</span></a></li>
+      <li class="done"><a href="b5-needs-me.html"><span class="dot"></span><span class="lbl">Your move</span></a></li>
+      <li class="cur" aria-current="step"><a href="b6-fir-consent.html"><span class="dot"></span><span class="lbl">Sign FIR</span></a></li>
+      <li class="gap" aria-hidden="true"></li>
+      <li><a href="b7-recovery-terminal.html"><span class="dot"></span><span class="lbl">Money back</span></a></li>
+    </ol>
+  </nav>
+
+  <p class="dateline">Wednesday, 27 August · 9:52 AM</p>
+  <h1>Your statement is ready. Read it, agree, sign.</h1>
+  <p class="hi-line">आपका बयान तैयार है — पढ़ें, सहमति दें, साइन करें। FIR = प्राथमिक सूचना, जाँच की शुरुआत।</p>
+
+  <div class="banner-proposed">
+    <span class="prov prov-p" style="flex:none;margin-top:2px">[PROPOSED]</span>
+    <span><b>This online consent step does not exist in today's process.</b> Today, this happens on paper at the police station.
+    We are designing the online version — everything below is our proposal, built on facts already confirmed in the case.</span>
+  </div>
+
+  <div class="two-col">
+
+    <!-- ============ statement summary ============ -->
+    <div class="panel-card">
+      <span class="pc-title">What will be filed — every line sourced · हर पंक्ति का स्रोत</span>
+      <div style="margin-top:10px">
+        <div class="fact-row">
+          <span class="f-dot"></span>
+          <div class="f-txt">
+            <b>₹98,500 was debited</b> from your Saral Bank account ••4821 on 25 Aug at 9:12 PM, by UPI, to kubertraders@dvb.
+            <span class="f-src">Source: your bank's debit SMS · SBL/TP/8842131</span>
+          </div>
+        </div>
+        <div class="fact-row">
+          <span class="f-dot"></span>
+          <div class="f-txt">
+            <b>You reported it within 22 minutes</b> through the intake desk (ref NCRP/2025/88214).
+            <span class="f-src">Source: acknowledgement slip · 25 Aug 9:34 PM</span>
+          </div>
+        </div>
+        <div class="fact-row">
+          <span class="f-dot"></span>
+          <div class="f-txt">
+            <b>The 1930 helpline logged the case</b> the same evening and routed it to I4C.
+            <span class="f-src">Source: helpline receipt · HELPLINE_LOG_4417</span>
+          </div>
+        </div>
+        <div class="fact-row">
+          <span class="f-dot"></span>
+          <div class="f-txt">
+            <b>The portal confirmed registration</b> by SMS the same night.
+            <span class="f-src">Source: registration SMS · 25 Aug 11:02 PM</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="excluded-note">
+        <b>Deliberately not in your statement:</b> the ₹31,000 hold at Dhanvir Co-op and the wallet trail are still
+        <span class="prov prov-a" style="vertical-align:middle">[ASSUMPTION]</span> reconstructions — no bank has confirmed them in writing.
+        A sworn statement carries only proven facts. They join later as evidence, not as your testimony.
+      </div>
+
+      <div class="statement-full">
+        <button class="acc-h" aria-expanded="false" data-acc="fullStmt">
+          Read the full drafted statement
+          <svg class="chev" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="acc-b" id="fullStmt" hidden style="margin-top:10px">
+          “On 25 August 2025 at approximately 9:12 PM, an amount of ₹98,500 was debited from my account
+          (Saral Bank Ltd, A/c ending 4821) via UPI to the handle kubertraders@dvb. I did not authorise this
+          transaction; it followed a fraudulent prize message. I reported the debit within minutes — first to the
+          1930 cyber helpline and through the online intake desk at 9:34 PM (acknowledgement NCRP/2025/88214),
+          which I confirm is true to the best of my knowledge. I request that an FIR be registered and the
+          transaction be investigated.”
+          <div style="margin-top:8px;font-size:12.5px;color:var(--muted)">Drafted from your captured report + confirmed records. Nothing was added from unconfirmed bank-side events.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ consent panel ============ -->
+    <div class="panel-card" id="consentCard">
+      <span class="pc-title">Consent · सहमति</span>
+
+      <div id="signFlow">
+        <ul class="consent-bullets">
+          <li>I have read the statement above; the facts are true to the best of my knowledge.</li>
+          <li>I consent to an FIR under IT Act §§66C/66D being filed on my complaint.</li>
+          <li>A signed copy stays in my case file; I can view or print it any time.</li>
+        </ul>
+
+        <label class="check sign-row">
+          <input type="checkbox" id="agreeChk">
+          <span>I agree · <span style="color:var(--muted)">मैं सहमत हूँ</span></span>
+        </label>
+
+        <div class="sign-row">
+          <button class="btn big" type="button" id="otpBtn" disabled style="width:100%;justify-content:center">Get OTP to sign · OTP से साइन करें</button>
+        </div>
+
+        <div class="otp-row" id="otpRow">
+          <input maxlength="1" inputmode="numeric" aria-label="OTP digit 1">
+          <input maxlength="1" inputmode="numeric" aria-label="OTP digit 2">
+          <input maxlength="1" inputmode="numeric" aria-label="OTP digit 3">
+          <input maxlength="1" inputmode="numeric" aria-label="OTP digit 4">
+          <input maxlength="1" inputmode="numeric" aria-label="OTP digit 5">
+          <input maxlength="1" inputmode="numeric" aria-label="OTP digit 6">
+          <button class="btn ghost" type="button" id="useDemoOtp" style="padding:10px 15px;font-size:13.5px">Use demo code</button>
+          <button class="btn" type="button" id="verifyBtn" disabled>Sign &amp; send</button>
+        </div>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:10px">Demo flow — any six digits sign. In production this is an Aadhaar-offline or DigiLocker-backed signature. <span class="prov prov-p" style="vertical-align:middle">[PROPOSED]</span></p>
+      </div>
+
+      <!-- signed state -->
+      <div class="signed-panel" id="signedPanel" aria-live="polite">
+        <div class="signed-head">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M4 12l6 6L20 6"/></svg>
+          <div>
+            <h3>Signed — 27 Aug, 9:58 AM.</h3>
+            <p>Sent to IO R. Deshmukh, Sector-21 Cyber PS. A signed copy is saved in your case file.</p>
+          </div>
+        </div>
+        <article class="ev" style="margin-top:14px;padding-left:0;padding-right:0;border-bottom:0">
+          <div class="body">
+            <div class="meta" style="margin-top:0">
+              <span class="author-chip">● You (citizen)</span>
+              <span class="code-chip">FIR_CONSENT_GIVEN</span>
+              <span class="prov prov-p">[PROPOSED]</span>
+              <span class="clk clk-done">recorded 9:58 AM</span>
+            </div>
+          </div>
+        </article>
+        <div class="after-list">
+          <b>What happens after signing:</b><br>
+          1 · The IO files the FIR and its number appears on your case home.<br>
+          2 · The investigation continues — including the still-unconfirmed bank-side events.<br>
+          3 · If money is recovered, return offers will appear here first.
+          <span class="hi" style="display:block;margin-top:4px">साइन के बाद भी आपका मामला यहीं चलता रहेगा।</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="skip-divider">9 DAYS LATER · SATURDAY 6 SEP</div>
+
+  <nav class="jpager" aria-label="Journey position">
+    <a class="prev" href="b5-needs-me.html">← Your move</a>
+    <span class="pos">BEAT 6 OF 7 · DAY 2 · 9:52 AM</span>
+    <a class="next" href="b7-recovery-terminal.html">Day 12 · Money back →</a>
+  </nav>
+
+  <footer class="colophon">Mock exploration — officer names, sections applied and the e-sign proposal are design fiction grounded on public process shape. No real case data.</footer>
+
+</main>
+
+<script>
+document.querySelectorAll('.acc-h').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    var panel = document.getElementById(btn.getAttribute('data-acc'));
+    var open = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', String(!open));
+    panel.hidden = open;
+  });
+});
+var hiBtn = document.getElementById('hiBtn');
+var langNote = document.getElementById('langNote');
+hiBtn.addEventListener('click', function(){
+  langNote.classList.add('show');
+  setTimeout(function(){ langNote.classList.remove('show'); }, 2200);
+});
+
+var chk = document.getElementById('agreeChk');
+var otpBtn = document.getElementById('otpBtn');
+var otpRow = document.getElementById('otpRow');
+var verifyBtn = document.getElementById('verifyBtn');
+var inputs = Array.prototype.slice.call(document.querySelectorAll('#otpRow input'));
+
+chk.addEventListener('change', function(){ otpBtn.disabled = !chk.checked; });
+otpBtn.addEventListener('click', function(){
+  otpRow.classList.add('show');
+  inputs[0].focus();
+});
+inputs.forEach(function(inp, i){
+  inp.addEventListener('input', function(){
+    inp.value = inp.value.replace(/\D/g,'').slice(0,1);
+    if (inp.value && i < inputs.length - 1) inputs[i+1].focus();
+    verifyBtn.disabled = !inputs.every(function(x){ return x.value.length === 1; });
+  });
+  inp.addEventListener('keydown', function(e){
+    if (e.key === 'Backspace' && !inp.value && i > 0) inputs[i-1].focus();
+  });
+});
+document.getElementById('useDemoOtp').addEventListener('click', function(){
+  '482114'.split('').forEach(function(d, i){ inputs[i].value = d; });
+  verifyBtn.disabled = false;
+});
+verifyBtn.addEventListener('click', function(){
+  document.getElementById('signFlow').style.display = 'none';
+  document.getElementById('signedPanel').classList.add('show');
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,151 @@
+{
+  "$comment": "Machine codes. Never translate. Plain sentences translate; chips and codes do not. Packet B first-hour deliverable alongside strings.en.json.",
+  "rule": "codes[] are the only permitted machine labels on chips, event rows, money states, account flags, and ledger events. Do not localise, reword, or expand acronyms.",
+  "codes": [
+    {
+      "code": "REPORTED",
+      "kind": "moneyState",
+      "meaning": "Citizen report captured; no institution has yet written back about the money."
+    },
+    {
+      "code": "PROVISIONALLY_HELD",
+      "kind": "moneyState",
+      "meaning": "An institution has placed a provisional hold on a named amount."
+    },
+    {
+      "code": "AMOUNT_HOLD_PARTIAL",
+      "kind": "event",
+      "meaning": "A hold landed for less than the amount that arrived at that institution."
+    },
+    {
+      "code": "FREEZE_REQUESTED",
+      "kind": "moneyState",
+      "meaning": "A freeze/hold has been asked of an institution; not yet a hold. Render as asked (dashed), never as held."
+    },
+    {
+      "code": "MOVED_ONWARD",
+      "kind": "moneyState",
+      "meaning": "Money left this institution for a further hop. One branch on Asha's Day-2 spine."
+    },
+    {
+      "code": "UNKNOWN",
+      "kind": "moneyState",
+      "meaning": "Location of this amount is not known to the ledger."
+    },
+    {
+      "code": "RETURNED_TO_CITIZEN",
+      "kind": "moneyState",
+      "meaning": "Amount restored to the complainant, typically via interim custody."
+    },
+    {
+      "code": "HOLD_RELEASED",
+      "kind": "moneyState",
+      "meaning": "A previously standing hold was lifted. Does not merge with any remaining hold."
+    },
+    {
+      "code": "INTERIM_CUSTODY",
+      "kind": "process",
+      "meaning": "Returned amount is held in interim custody pending complainant confirmation before close."
+    },
+    {
+      "code": "PRE_HOLD_LEAK",
+      "kind": "event",
+      "meaning": "Amount that left before a hold landed. Asha: ₹500, permanently unrecoverable, never rounded away."
+    },
+    {
+      "code": "COMPLAINT_FILED",
+      "kind": "event",
+      "meaning": "Full complaint accepted; acknowledgement number issued."
+    },
+    {
+      "code": "ANONYMOUS_RECEIVED",
+      "kind": "event",
+      "meaning": "Anonymous report accepted. Confirmation only; not trackable."
+    },
+    {
+      "code": "HELPLINE_LOG",
+      "kind": "event",
+      "meaning": "1930 helpline log entry."
+    },
+    {
+      "code": "FIR_CONSENT_GIVEN",
+      "kind": "event",
+      "meaning": "Citizen e-consent to FIR. Proposed online step; not in today's SOP."
+    },
+    {
+      "code": "CITIZEN_CONFIRM_PENDING",
+      "kind": "process",
+      "meaning": "Terminal close is gated on complainant confirmation of returned funds."
+    },
+    {
+      "code": "DIGITAL_BANKING_SUSPENDED",
+      "kind": "accountFlag",
+      "meaning": "Digital banking switch ON. Orthogonal to amount-hold and seizure."
+    },
+    {
+      "code": "SEIZURE_NONE",
+      "kind": "accountFlag",
+      "meaning": "Seizure switch OFF/NONE. Court order only; do not infer from a hold."
+    },
+    {
+      "code": "OTP_SENT",
+      "kind": "process",
+      "meaning": "Mock SMS OTP dispatched. The code shown in the on-screen toast is the only valid code."
+    },
+    {
+      "code": "OTP_VERIFIED",
+      "kind": "process",
+      "meaning": "Entered digits matched the toast code."
+    },
+    {
+      "code": "NO_RECORD_FOUND",
+      "kind": "process",
+      "meaning": "Track-status result for an unknown acknowledgement number."
+    },
+    {
+      "code": "CONFIRMATION_ONLY",
+      "kind": "boundary",
+      "meaning": "Anonymous-report boundary. Record exists for confirmation; it cannot be tracked."
+    },
+    {
+      "code": "TRACKABLE",
+      "kind": "boundary",
+      "meaning": "Citizen-filed complaint. Ack number issued; status can be tracked with registered-mobile OTP."
+    },
+    {
+      "code": "ASSUMPTION",
+      "kind": "provenance",
+      "meaning": "Reconstruction of bank-side reality. Ages until confirmed. Never enters a sworn statement or a DEADLINE claim. Badge text is [ASSUMPTION]."
+    },
+    {
+      "code": "PROPOSED",
+      "kind": "provenance",
+      "meaning": "Our design; exists nowhere in today's SOP. Badge text is [PROPOSED]."
+    },
+    {
+      "code": "CONFIRMED",
+      "kind": "provenance",
+      "meaning": "Documented fact. Badge text is CONFIRMED."
+    },
+    {
+      "code": "ELAPSED",
+      "kind": "clockBadge",
+      "meaning": "Clock badge. Counts from the theft. Never translate the badge word; the explainer beside it is a translatable pair."
+    },
+    {
+      "code": "AGE",
+      "kind": "clockBadge",
+      "meaning": "Clock badge. Counts from this slip's own timestamp. Never translate the badge word."
+    },
+    {
+      "code": "DEADLINE",
+      "kind": "clockBadge",
+      "meaning": "Clock badge. Appears only with a written rule. Never translate the badge word."
+    },
+    {
+      "code": "TARGET",
+      "kind": "clockBadge",
+      "meaning": "Clock badge. Always labelled ours. Never translate the badge word."
+    }
+  ]
+}

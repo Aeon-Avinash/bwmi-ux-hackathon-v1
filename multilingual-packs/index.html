@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NCRP Multilingual UI Table & Interactive Test Harness</title>
+  <!-- Noto Font Stacks & i18n CSS -->
+  <link rel="stylesheet" href="i18n/fonts.css">
+  <style>
+    :root {
+      --bg-page: oklch(98% 0.005 255);
+      --bg-card: #ffffff;
+      --bg-subtle: oklch(96% 0.008 255);
+      --fg-strong: oklch(18% 0.02 255);
+      --fg-muted: oklch(48% 0.015 255);
+      --border-subtle: oklch(90% 0.01 255);
+      --border-strong: oklch(80% 0.015 255);
+      --brand-navy: #0f3460;
+      --brand-blue: #1e3a8a;
+      --brand-teal: #0284c7;
+      --c-assumed: #9333ea;
+      --c-held: #059669;
+      --c-danger: #e11d48;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg-page);
+      color: var(--fg-strong);
+      font-family: var(--font-latin);
+      line-height: 1.5;
+      padding: 0;
+    }
+
+    /* Masthead & Sticky Control Bar */
+    header.portal-header {
+      background: var(--brand-navy);
+      color: #fff;
+      padding: 12px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .brand-title .emblem {
+      width: 32px;
+      height: 32px;
+      background: #e2e8f0;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #0f172a;
+      font-size: 0.8rem;
+      font-weight: 800;
+    }
+
+    /* Controls Panel */
+    .controls-cluster {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      background: rgba(255,255,255,0.1);
+      padding: 6px 16px;
+      border-radius: 8px;
+    }
+
+    .control-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.88rem;
+    }
+    .control-item select, .control-item input {
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,0.3);
+      background: #ffffff;
+      color: #0f172a;
+      font-weight: 600;
+      font-size: 0.88rem;
+    }
+
+    /* Toggle Switch */
+    .switch-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .switch-ui {
+      width: 44px;
+      height: 24px;
+      background: rgba(255,255,255,0.3);
+      border-radius: 12px;
+      position: relative;
+      transition: 0.2s;
+    }
+    .switch-ui::after {
+      content: "";
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      left: 3px;
+      top: 3px;
+      background: #fff;
+      border-radius: 50%;
+      transition: 0.2s;
+    }
+    .switch-checkbox:checked + .switch-ui {
+      background: var(--brand-teal);
+    }
+    .switch-checkbox:checked + .switch-ui::after {
+      left: 23px;
+    }
+    .switch-checkbox { display: none; }
+
+    /* Main Container */
+    main.content-area {
+      max-width: 1200px;
+      margin: 24px auto;
+      padding: 0 20px 60px;
+    }
+
+    /* Info Strip */
+    .info-banner {
+      background: #eff6ff;
+      border-left: 4px solid var(--brand-teal);
+      padding: 14px 18px;
+      border-radius: 6px;
+      margin-bottom: 24px;
+      font-size: 0.92rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    .stats-badge {
+      background: var(--brand-blue);
+      color: #fff;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 0.8rem;
+      letter-spacing: 0.5px;
+    }
+
+    /* Filter Bar */
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .btn-group {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border-strong);
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--fg-strong);
+      cursor: pointer;
+      transition: 0.15s;
+    }
+    .filter-btn:hover {
+      background: var(--bg-subtle);
+    }
+    .filter-btn.active {
+      background: var(--brand-blue);
+      color: #fff;
+      border-color: var(--brand-blue);
+    }
+
+    .search-box {
+      min-width: 260px;
+      padding: 7px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--border-strong);
+      font-size: 0.88rem;
+    }
+
+    /* Strings Grid & Cards */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 16px;
+    }
+
+    .string-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 12px;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .string-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.07);
+    }
+
+    .card-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 0.75rem;
+      font-family: var(--mono);
+      color: var(--fg-muted);
+      border-bottom: 1px dashed var(--border-subtle);
+      padding-bottom: 8px;
+    }
+    .card-meta .str-id {
+      color: var(--brand-blue);
+      font-weight: 600;
+    }
+    .card-meta .str-reg {
+      text-transform: uppercase;
+      background: var(--bg-subtle);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    /* Bilingual Pair Styling within Card */
+    .bilingual-pair {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    /* Primary vs Secondary Swapping */
+    body.primary-regional .line-regional {
+      font-size: 1.05em;
+      font-weight: 700;
+      color: var(--fg-strong);
+      order: 1;
+    }
+    body.primary-regional .line-en {
+      font-size: 0.88em;
+      font-weight: 500;
+      color: var(--fg-muted);
+      order: 2;
+    }
+
+    body.primary-en .line-en {
+      font-size: 1.05em;
+      font-weight: 700;
+      color: var(--fg-strong);
+      order: 1;
+    }
+    body.primary-en .line-regional {
+      font-size: 0.88em;
+      font-weight: 500;
+      color: var(--fg-muted);
+      order: 2;
+    }
+
+    /* Chips */
+    .code-chip {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 0.78em;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: #f1f5f9;
+      color: #0f172a;
+      border: 1px solid #cbd5e1;
+    }
+
+    /* Footer */
+    footer.test-footer {
+      text-align: center;
+      padding: 30px;
+      font-size: 0.85rem;
+      color: var(--fg-muted);
+      border-top: 1px solid var(--border-subtle);
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body class="primary-regional">
+
+  <!-- Header -->
+  <header class="portal-header">
+    <div class="brand-title">
+      <div class="emblem">GOI</div>
+      <div>
+        <div>National Cyber Crime Reporting Portal</div>
+        <div style="font-size:0.75rem; font-weight:400; opacity:0.85;">i18n Bilingual Switch & Regional Script Harness</div>
+      </div>
+    </div>
+
+    <div class="controls-cluster">
+      <!-- Language Dropdown -->
+      <div class="control-item">
+        <label for="langPicker"><strong>Regional Language:</strong></label>
+        <select id="langPicker">
+          <!-- Populated by JS -->
+        </select>
+      </div>
+
+      <!-- Primary Switch -->
+      <div class="control-item">
+        <label class="switch-wrap" title="Swap which line has primary font weight/size (both lines always stay visible)">
+          <span>Primary: <strong id="primaryLabel">Regional (Hindi)</strong></span>
+          <input type="checkbox" id="swapSwitch" class="switch-checkbox" checked>
+          <div class="switch-ui"></div>
+        </label>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Area -->
+  <main class="content-area">
+    
+    <!-- Info Banner -->
+    <div class="info-banner">
+      <div>
+        <strong>Contract Rule Verification:</strong> Two-line/two-weight bilingual rendering. Protected tokens in <code>{curly}</code> (machine codes, amounts, acronyms) stay untouched. RTL languages (Urdu, Kashmiri, Sindhi) mirror regional line only.
+      </div>
+      <div class="stats-badge" id="statsBadge">Loading...</div>
+    </div>
+
+    <!-- Filter & Search Bar -->
+    <div class="filter-bar">
+      <div class="btn-group">
+        <button class="filter-btn active" data-journey="all">All Strings</button>
+        <button class="filter-btn" data-journey="shell">Portal Shell & Ack</button>
+        <button class="filter-btn" data-journey="track">Track Journey (J1)</button>
+        <button class="filter-btn" data-journey="fileNamed">File Named / Spine (J2)</button>
+        <button class="filter-btn" data-journey="fileAnonymous">Anonymous / 4 Categories (J3)</button>
+      </div>
+      <input type="text" id="searchBox" class="search-box" placeholder="Filter strings by key or English text…">
+    </div>
+
+    <!-- Cards Grid -->
+    <div class="cards-grid" id="cardsGrid">
+      <!-- Rendered dynamically -->
+    </div>
+
+  </main>
+
+  <footer class="test-footer">
+    <p>National Cyber Crime Reporting Portal (NCRP) · Multilingual Mock Table Test Suite</p>
+    <p>Supports all 22 Eighth-Schedule Languages of India + English · Governed by Ministry of Home Affairs (MHA / I4C)</p>
+  </footer>
+
+  <script>
+    let masterData = null;
+    let currentLang = 'hi';
+    let currentFilter = 'all';
+    let searchQuery = '';
+
+    // Load strings.json
+    async function init() {
+      try {
+        const res = await fetch('i18n/strings.json');
+        masterData = await res.json();
+        setupLanguagePicker();
+        setupEvents();
+        render();
+      } catch (err) {
+        document.getElementById('cardsGrid').innerHTML = `<div style="color:red; padding:20px;">Failed to load i18n/strings.json: ${err.message}</div>`;
+      }
+    }
+
+    function setupLanguagePicker() {
+      const picker = document.getElementById('langPicker');
+      picker.innerHTML = '';
+      const langs = ((masterData.$meta)||(masterData.meta)).languages;
+      for (const [code, meta] of Object.entries(langs)) {
+        if (code === 'en') continue;
+        const opt = document.createElement('option');
+        opt.value = code;
+        opt.textContent = `${meta.name} (${meta.native}) [${meta.dir.toUpperCase()}]`;
+        if (code === currentLang) opt.selected = true;
+        picker.appendChild(opt);
+      }
+    }
+
+    function setupEvents() {
+      // Language change
+      document.getElementById('langPicker').addEventListener('change', (e) => {
+        currentLang = e.target.value;
+        updatePrimaryLabel();
+        render();
+      });
+
+      // Swap Primary switch
+      const switchEl = document.getElementById('swapSwitch');
+      switchEl.addEventListener('change', (e) => {
+        if (e.target.checked) {
+          document.body.className = 'primary-regional';
+        } else {
+          document.body.className = 'primary-en';
+        }
+        updatePrimaryLabel();
+      });
+
+      // Filter Buttons
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentFilter = btn.getAttribute('data-journey');
+          render();
+        });
+      });
+
+      // Search Box
+      document.getElementById('searchBox').addEventListener('input', (e) => {
+        searchQuery = e.target.value.toLowerCase().trim();
+        render();
+      });
+    }
+
+    function updatePrimaryLabel() {
+      const isRegional = document.getElementById('swapSwitch').checked;
+      const langName = ((masterData.$meta)||(masterData.meta)).languages[currentLang].name;
+      document.getElementById('primaryLabel').textContent = isRegional ? `Regional (${langName})` : `English`;
+    }
+
+    function formatText(str) {
+      if (!str) return '';
+      // Escape HTML
+      let out = str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      // Highlight machine codes & curly protected tokens
+      out = out.replace(/\{code:([^}]+)\}/g, '<span class="code-chip">$1</span>');
+      out = out.replace(/\{([^}]+)\}/g, '<span class="protected-token" style="color:#0284c7; font-weight:700;">{$1}</span>');
+      return out;
+    }
+
+    function render() {
+      const grid = document.getElementById('cardsGrid');
+      const langMeta = ((masterData.$meta)||(masterData.meta)).languages[currentLang];
+      const isRtl = langMeta.dir === 'rtl';
+
+      let filtered = masterData.strings.filter(item => {
+        if (currentFilter !== 'all' && item.journey !== currentFilter) return false;
+        if (searchQuery) {
+          const matchId = item.id.toLowerCase().includes(searchQuery);
+          const matchEn = item.en.toLowerCase().includes(searchQuery);
+          const matchReg = (item[currentLang] || '').toLowerCase().includes(searchQuery);
+          if (!matchId && !matchEn && !matchReg) return false;
+        }
+        return true;
+      });
+
+      document.getElementById('statsBadge').textContent = `${filtered.length} / ${masterData.strings.length} Strings`;
+
+      grid.innerHTML = filtered.map(item => {
+        const regionalText = item[currentLang] || item['hi'] || item['en'];
+        const isFallback = !item[currentLang] && item['hi'];
+        const fallbackClass = isFallback ? 'i18n-fallback' : '';
+
+        return `
+          <div class="string-card">
+            <div class="bilingual-pair" lang="${currentLang}">
+              <div class="line-en">${formatText(item.en)}</div>
+              <div class="line-regional ${fallbackClass}" dir="${isRtl ? 'rtl' : 'ltr'}">${formatText(regionalText)}</div>
+            </div>
+            <div class="card-meta">
+              <span class="str-id">${item.id}</span>
+              <span class="str-reg">${item.register || 'general'}</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    init();
+  </script>
+</body>
+</html>

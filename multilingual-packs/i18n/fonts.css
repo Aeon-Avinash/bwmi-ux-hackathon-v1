@@ -1,0 +1,148 @@
+/* ============================================================
+   National Cyber Crime Reporting Portal (NCRP)
+   Multilingual Typography & Noto Font Stacks (i18n/fonts.css)
+   Supports all 22 Eighth-Schedule Indian Languages + English
+   ============================================================ */
+
+/* 1. Google Webfont Imports for all 12 Script Families */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=Noto+Sans+Bengali:wght@400;500;600;700;800&family=Noto+Sans+Gujarati:wght@400;500;600;700;800&family=Noto+Sans+Gurmukhi:wght@400;500;600;700;800&family=Noto+Sans+Kannada:wght@400;500;600;700;800&family=Noto+Sans+Malayalam:wght@400;500;600;700;800&family=Noto+Sans+Meetei+Mayek:wght@400;500;600;700;800&family=Noto+Sans+Odia:wght@400;500;600;700;800&family=Noto+Sans+Ol+Chiki:wght@400;500;600;700;800&family=Noto+Sans+Tamil:wght@400;500;600;700;800&family=Noto+Sans+Telugu:wght@400;500;600;700;800&family=Noto+Sans+Arabic:wght@400;500;600;700;800&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap');
+
+/* 2. System + Noto Fallback Typography Stacks */
+:root {
+  --font-latin: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans", sans-serif;
+  
+  /* Per-Script Stacks */
+  --font-devanagari: "Noto Sans Devanagari", "Noto Sans", var(--font-latin);
+  --font-bengali:    "Noto Sans Bengali", var(--font-latin);
+  --font-gujarati:   "Noto Sans Gujarati", var(--font-latin);
+  --font-gurmukhi:   "Noto Sans Gurmukhi", var(--font-latin);
+  --font-kannada:    "Noto Sans Kannada", var(--font-latin);
+  --font-malayalam:  "Noto Sans Malayalam", var(--font-latin);
+  --font-meitei:     "Noto Sans Meetei Mayek", "Noto Sans Bengali", var(--font-latin);
+  --font-odia:       "Noto Sans Odia", var(--font-latin);
+  --font-olchiki:    "Noto Sans Ol Chiki", var(--font-latin);
+  --font-persoarabic:"Noto Nastaliq Urdu", "Noto Sans Arabic", "Segoe UI", Tahoma, sans-serif;
+  --font-tamil:      "Noto Sans Tamil", var(--font-latin);
+  --font-telugu:     "Noto Sans Telugu", var(--font-latin);
+
+  /* Unified Pan-Indian Fallback Stack */
+  --font-pan-indian: var(--font-devanagari), var(--font-bengali), var(--font-tamil), 
+                     var(--font-telugu), var(--font-kannada), var(--font-malayalam), 
+                     var(--font-gujarati), var(--font-gurmukhi), var(--font-odia), 
+                     var(--font-persoarabic), var(--font-meitei), var(--font-olchiki);
+}
+
+/* 3. Language Attribute Specific Typography Selectors */
+:lang(hi), :lang(mr), :lang(sa), :lang(kok), :lang(mai), :lang(brx), :lang(doi), :lang(ne) {
+  font-family: var(--font-devanagari);
+}
+
+:lang(bn), :lang(as) {
+  font-family: var(--font-bengali);
+}
+
+:lang(gu) {
+  font-family: var(--font-gujarati);
+}
+
+:lang(pa) {
+  font-family: var(--font-gurmukhi);
+}
+
+:lang(kn) {
+  font-family: var(--font-kannada);
+}
+
+:lang(ml) {
+  font-family: var(--font-malayalam);
+}
+
+:lang(mni) {
+  font-family: var(--font-meitei);
+}
+
+:lang(or) {
+  font-family: var(--font-odia);
+}
+
+:lang(sat) {
+  font-family: var(--font-olchiki);
+}
+
+:lang(ta) {
+  font-family: var(--font-tamil);
+}
+
+:lang(te) {
+  font-family: var(--font-telugu);
+}
+
+:lang(ur), :lang(ks), :lang(sd) {
+  font-family: var(--font-persoarabic);
+}
+
+/* 4. Bilingual Pair Layout Engine */
+.bilingual-pair {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* Primary Line (Emphasis) */
+.bilingual-pair .line-primary {
+  font-size: 1.0em;
+  font-weight: 700;
+  color: var(--fg-strong, oklch(17% 0.02 255));
+  line-height: 1.35;
+}
+
+/* Secondary Line (Visual quietness, -2px scale, muted tone) */
+.bilingual-pair .line-secondary {
+  font-size: 0.88em;
+  font-weight: 500;
+  color: var(--muted, oklch(50% 0.014 255));
+  line-height: 1.4;
+}
+
+/* 5. Bidirectional (RTL) Rules for Urdu, Kashmiri, and Sindhi */
+/* Rule: Regional line mirrors direction; main layout and container remain LTR */
+.regional-line[dir="rtl"],
+[lang="ur"] .regional-line,
+[lang="ks"] .regional-line,
+[lang="sd"] .regional-line,
+.line-secondary[dir="rtl"],
+.line-primary[dir="rtl"] {
+  direction: rtl;
+  text-align: right;
+  unicode-bidi: isolate;
+}
+
+/* Ensure Latin digits and protected tokens maintain LTR ordering */
+.protected-token,
+.tabular-num,
+.code-chip,
+.mchip,
+.clk,
+.prov {
+  direction: ltr !important;
+  unicode-bidi: isolate;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 6. Mock Fallback Indicator Rule */
+/* Fallback rule: missing key -> render Hindi with visible dotted-underline */
+.i18n-fallback {
+  text-decoration: underline dotted color-mix(in oklab, var(--c-assumed, #9333ea) 75%, transparent);
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1.5px;
+  cursor: help;
+}
+
+.i18n-fallback::after {
+  content: " [हिं fallback]";
+  font-size: 0.72em;
+  font-family: var(--mono, monospace);
+  color: var(--c-assumed, #9333ea);
+  opacity: 0.85;
+  font-weight: 600;
+}

@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Case Spine — Component &amp; token sheet</title>
+<link rel="stylesheet" href="assets/spine.css">
+<style>
+.wrap{max-width:980px}
+.sheet-head{margin-top:26px;padding:22px 24px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius)}
+.sheet-head h2{font-size:17px;font-weight:780;color:var(--fg-strong)}
+.sheet-head p{font-size:14px;color:var(--muted);margin-top:6px;line-height:1.6;max-width:76ch}
+.sheet-head code{font-family:var(--mono);font-size:12px;background:var(--sunken);border:1px solid var(--border);border-radius:6px;padding:1.5px 7px;color:var(--fg)}
+.tok-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-top:14px}
+.tok{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;color:var(--muted)}
+.tok i{width:22px;height:22px;border-radius:6px;flex:none;border:1px solid var(--border)}
+
+section.comp{margin-top:44px}
+.comp-h{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:6px}
+.comp-h .cid{font-family:var(--mono);font-size:12px;font-weight:800;color:#fff;background:var(--fg-strong);border-radius:8px;padding:4px 10px}
+.comp-h h2{font-size:21px;font-weight:800;color:var(--fg-strong);letter-spacing:-.01em}
+.comp-h .cls{margin-left:auto;font-family:var(--mono);font-size:11.5px;color:var(--accent-ink)}
+.comp-purpose{font-size:14.5px;color:var(--muted);line-height:1.6;margin-top:4px;max-width:74ch}
+.demo-stage{
+  margin-top:14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:22px;display:flex;flex-direction:column;gap:12px;
+}
+.demo-stage.on-dark{background:var(--sunken)}
+.rules{margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:720px){.rules{grid-template-columns:1fr}}
+.rule-card{border:1px dashed var(--border-strong);border-radius:12px;padding:12px 15px;font-size:13.5px;line-height:1.55;color:var(--muted)}
+.rule-card b{color:var(--fg)}
+.rule-card.do b{color:var(--c-confirm)}
+.rule-card.dont b{color:var(--c-deadline)}
+table.toks{width:100%;border-collapse:collapse;margin-top:12px;font-size:13px}
+table.toks th{font-family:var(--mono);font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);text-align:left;padding:7px 10px;border-bottom:1.5px solid var(--border-strong)}
+table.toks td{padding:7px 10px;border-bottom:1px solid var(--border);vertical-align:top;color:var(--fg)}
+table.toks td:first-child{font-family:var(--mono);font-size:11.5px;color:var(--accent-ink);white-space:nowrap}
+.mini-label{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="row">
+    <div class="wordmark"><span class="mark" aria-hidden="true"></span>Case Spine</div>
+    <span class="daytag">A2 · COMPONENT &amp; TOKEN SHEET</span>
+    <span class="spacer"></span>
+    <a class="link" href="journey.html">Journey →</a>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <p class="dateline">Design system documentation · calm-under-duress substrate</p>
+  <h1>Build from spec, not screenshots.</h1>
+  <p class="hi-line">हर कंपोनेंट का नाम, उसके टोकन और इस्तेमाल का नियम।</p>
+
+  <div class="sheet-head">
+    <h2>Contract</h2>
+    <p>This sheet documents <code>assets/spine.css</code> — every component below is a real class implemented there, already
+    running across the seven journey screens. Codex should import the stylesheet and use these names verbatim.
+    Tokens are OKLch; type is system sans (+ Noto Sans Devanagari) at large sizes; numerics always tabular.</p>
+    <div class="tok-grid">
+      <span class="tok"><i style="background:oklch(97% 0.004 245)"></i>--bg 97%</span>
+      <span class="tok"><i style="background:#fff"></i>--surface #fff</span>
+      <span class="tok"><i style="background:oklch(24% 0.018 255)"></i>--fg 24%</span>
+      <span class="tok"><i style="background:oklch(50% 0.014 255)"></i>--muted 50%</span>
+      <span class="tok"><i style="background:oklch(50% 0.085 235)"></i>--accent 235</span>
+      <span class="tok"><i style="background:oklch(45% 0.09 70)"></i>--c-held 70</span>
+      <span class="tok"><i style="background:transparent;border:1.5px dashed oklch(50% 0.09 295)"></i>--c-assumed 295</span>
+      <span class="tok"><i style="background:oklch(46% 0.09 155)"></i>--c-confirm 155</span>
+      <span class="tok"><i style="background:transparent;border:1.5px solid oklch(48% 0.16 27)"></i>--c-deadline 27</span>
+    </div>
+  </div>
+
+  <!-- ==================== C1 EVENT CARD ==================== -->
+  <section class="comp">
+    <div class="comp-h"><span class="cid">C1</span><h2>Event row — the ledger atom</h2><span class="cls">.ev · .band.confirmed / .band.reconstructed · .retired / .corrected</span></div>
+    <p class="comp-purpose">One event = author + timestamp + machine code + plain sentence pair. Confirmed events sit in a solid-bordered band; reconstructions sit in a separate dashed band — never mixed in one list. That structural separation <b>is</b> the Honesty axis.</p>
+    <div class="demo-stage">
+      <article class="ev">
+        <span class="t">26 Aug<br>00:41</span>
+        <div class="body">
+          <p class="p">Dhanvir Co-op Bank <b>put ₹31,000 on hold</b> in “Kuber Traders” ••7734 and suspended its digital banking.</p>
+          <div class="meta">
+            <span class="author-chip">● Dhanvir Bank</span>
+            <span class="code-chip">AMOUNT_HOLD_PARTIAL</span>
+            <span class="clk clk-age">AGE · last word 33 hrs ago</span>
+            <span class="prov prov-a">[ASSUMPTION]</span>
+          </div>
+        </div>
+      </article>
+      <article class="ev corrected">
+        <span class="t">30 Aug<br>11:02 AM</span>
+        <div class="body">
+          <p class="p"><b>PayMate Wallet replied:</b> held ₹42,000, not ₹42,500 — a ₹500 autopay left before their hold landed.</p>
+          <div class="meta">
+            <span class="author-chip">● PayMate Wallet</span>
+            <span class="code-chip">AMOUNT_HOLD_PARTIAL</span>
+            <span class="prov prov-p">CONFIRMED</span>
+          </div>
+        </div>
+      </article>
+    </div>
+    <div class="rules">
+      <div class="rule-card do"><b>Do:</b> keep author chips to institution + channel (“● Saral Bank · SMS”); age badges count from this card's own timestamp.</div>
+      <div class="rule-card dont"><b>Don't:</b> colour the whole card by mood. Provenance lives in borders/badges; sentences stay ink-coloured.</div>
+    </div>
+    <table class="toks">
+      <tr><th>token / class</th><th>value</th></tr>
+      <tr><td>.ev padding</td><td>16px 20px · gap 16px · radius 14px inside bands</td></tr>
+      <tr><td>.t timestamp</td><td>mono 12px · muted · tabular · min-width 86px</td></tr>
+      <tr><td>.p sentence</td><td>15.5px / 1.5 · strong words use --fg-strong</td></tr>
+      <tr><td>.retired</td><td>opacity .72 + strike-through in --c-assumed 55%</td></tr>
+      <tr><td>.corrected</td><td>+ 4px left border --c-confirm (correction trail)</td></tr>
+    </table>
+  </section>
+
+  <!-- ==================== C2 PROVENANCE BADGES ==================== -->
+  <section class="comp">
+    <div class="comp-h"><span class="cid">C2</span><h2>Provenance badges</h2><span class="cls">.prov.prov-a · .prov.prov-p · .prov-p “CONFIRMED”</span></div>
+    <p class="comp-purpose">Three states of truth. [ASSUMPTION] = our reconstruction of bank-side reality — it ages until confirmed. [PROPOSED] = our design, exists nowhere in today's SOP. CONFIRMED = documented fact.</p>
+    <div class="demo-stage on-dark">
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+        <span class="prov prov-a">[ASSUMPTION]</span>
+        <span class="prov prov-p">[PROPOSED]</span>
+        <span class="prov prov-p">CONFIRMED</span>
+        <span class="mini-label">11px · weight 800 · ls .06em · radius 6px</span>
+      </div>
+    </div>
+    <div class="rules">
+      <div class="rule-card do"><b>Do:</b> tag the feature, not a footnote — the badge sits inline next to what it qualifies.</div>
+      <div class="rule-card dont"><b>Don't:</b> ever let an [ASSUMPTION] enter a sworn statement or a DEADLINE claim.</div>
+    </div>
+    <table class="toks">
+      <tr><th>token</th><th>value</th></tr>
+      <tr><td>.prov-a</td><td>text --c-assumed · border 1.5px dashed --c-assumed 55% · no fill</td></tr>
+      <tr><td>.prov-p</td><td>text --accent-ink · border 1.5px solid accent 35% · fill --accent-wash</td></tr>
+    </table>
+  </section>
+
+  <!-- ==================== C3 CLOCK BADGES ==================== -->
+  <section class="comp">
+    <div class="comp-h"><span class="cid">C3</span><h2>Clock badges — only honest time</h2><span class="cls">.clk · .clk-age · .clk-deadline · .clk-target · .clk-done</span></div>
+    <p class="comp-purpose">Four clocks, nothing else. ELAPSED counts since report (neutral). AGE counts since a card's own source timestamp (violet). DEADLINE appears only with a written rule behind it (crimson). TARGET is our bar, always labelled ours (blue).</p>
+    <div class="demo-stage">
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+        <span class="clk">ELAPSED · 36 hrs</span>
+        <span class="clk clk-age">AGE · 33 hrs</span>
+        <span class="clk clk-deadline"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>DEADLINE · by Tue 1 Sep, 9:34 PM</span>
+        <span class="clk clk-target">TARGET · OURS [PROPOSED] · 48 hrs</span>
+        <span class="clk clk-done">recorded 9:58 AM</span>
+      </div>
+    </div>
+    <div class="rules">
+      <div class="rule-card do"><b>Do:</b> carry a citation on every DEADLINE (“cited: helpline SOP”) and “OURS” on every TARGET.</div>
+      <div class="rule-card dont"><b>Don't:</b> animate, pulse, or count down any clock. No SLA theatre — time here reads, it doesn't tick at you.</div>
+    </div>
+    <table class="toks">
+      <tr><th>token</th><th>value</th></tr>
+      <tr><td>.clk base</td><td>12.5px w700 · pill radius 999 · border --border-strong · tabular nums</td></tr>
+      <tr><td>AGE fill</td><td>oklch(97% 0.008 295) · text/border --c-assumed mixes</td></tr>
+      <tr><td>DEADLINE fill</td><td>oklch(97.5% 0.012 27) · text --c-deadline · crimson never used as wall/fill elsewhere</td></tr>
+      <tr><td>TARGET fill</td><td>--accent-wash · text --accent-ink</td></tr>
+    </table>
+  </section>
+
+  <!-- ==================== C4 MONEY-STATE CHIPS ==================== -->
+  <section class="comp">
+    <div class="comp-h"><span class="cid">C4</span><h2>Money-state chips</h2><span class="cls">.mchip .mchip-held / -asked / -moved / -unknown / -returned</span></div>
+    <p class="comp-purpose">The per-institution state of the money, machine code kept intact as code. An asked hold is visibly not a hold: dashed vs solid tells the story before reading.</p>
+    <div class="demo-stage">
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+        <span class="mchip mchip-reported"><i></i>REPORTED</span>
+        <span class="mchip mchip-held"><i></i>PROVISIONALLY_HELD ₹31,000</span>
+        <span class="mchip mchip-moved"><i></i>MOVED_ONWARD ₹67,500</span>
+        <span class="mchip mchip-asked"><i></i>FREEZE_REQUESTED ₹42,500</span>
+        <span class="mchip mchip-unknown"><i></i>UNKNOWN ₹25,000</span>
+        <span class="mchip mchip-returned"><i></i>RETURNED_TO_CITIZEN ₹42,000</span>
+      </div>
+    </div>
+    <div class="rules">
+      <div class="rule-card do"><b>Do:</b> flip ASKED→HELD only when the institution writes back; that flip starts its own fresh AGE clock.</div>
+      <div class="rule-card dont"><b>Don't:</b> translate codes into friendlier codes. Plain sentences translate; chips don't.</div>
+    </div>
+    <table class="toks">
+      <tr><th>state</th><th>treatment</th></tr>
+      <tr><td>held</td><td>solid border --c-held 42% · fill --c-held-bg · text --c-held</td></tr>
+      <tr><td>asked</td><td>dashed border --c-assumed 52% · no fill (not yet true)</td></tr>
+      <tr><td>moved</td><td>solid violet tint fill oklch(97% 0.008 295)</td></tr>
+      <tr><td>unknown</td><td>dashed grey · transparent (we know nothing)</td></tr>
+      <tr><td>returned</td><td>green family of --c-confirm</td></tr>
+    </table>
+  </section>
+
+  <!-- ==================== C5 ACCOUNT FLAGS ==================== -->
+  <section class="comp">
+    <div class="comp-h"><span class="cid">C5</span><h2>Account flag rows — three orthogonal switches</h2><span class="cls">.flagrow · .st-pill .st-on / .st-off / .st-asked</span></div>
+    <p class="comp-purpose">Amount hold, digital-banking suspension, seizure. Independent by law and by UI: each row carries its own state pill and its own “since” date with provenance.</p>
+    <div class="demo-stage">
+      <div class="flags-card">
+        <div class="flagrow">
+          <div class="name">Amount hold<small>रकम पर रोक</small></div>
+          <span class="st-pill st-on">ON · ₹31,000</span>
+          <p class="meaning">That money cannot be spent by anyone.</p>
+          <span class="since">since 26 Aug 00:41</span>
+        </div>
+        <div class="flagrow">
+          <div class="name">Digital banking<small>ऑनलाइन बैंकिंग बंद</small></div>
+          <span class="st-pill st-on">ON</span>
+          <p class="meaning">Stops movement; touches no balance.</p>
+          <span class="since">since 26 Aug 00:41</span>
+        </div>
+        <div class="flagrow">
+          <div class="name">Seizure<small>ज़ब्ती</small></div>
+          <span class="st-pill st-off">NONE</span>
+          <p class="meaning">Court order only. Not applied here.</p>
+          <span class="since">—</span>
+        </div>
+      </div>
+    </div>
+    <div class="rules">
+      <div class="rule-card do"><b>Do:</b> show all three rows even when OFF/NONE — absence of action is information.</div>
+      <div class="rule-card dont"><b>Don't:</b> infer one switch from another; restore-of-banking while amount-still-held must render without contradiction (Raft 3's hero state).</div>
+    </div>
+    <table class="toks">
+      <tr><th>pill</th><th>treatment</th></tr>
+      <tr><td>.st-on</td><td>fill oklch(96% 0.03 85) · text --c-held (amber = restriction active)</td></tr>
+      <tr><td>.st-asked</td><td>dashed violet — requested, not yet real</td></tr>
+      <tr><td>.st-off</td><td>fill --sunken · text muted</td></tr>
+    </table>
+  </section>
+
+  <!-- ==================== C6 BILINGUAL FACT PAIR ==================== -->
+  <section class="comp">
+    <div class="comp-h"><span class="cid">C6</span><h2>Bilingual fact pair</h2><span class="cls">h1 + .hi-line · .sec-h h2 + .hi · labels small·हिं</span></div>
+    <p class="comp-purpose">English leads, Hindi echoes directly beneath in muted tone — headings, section titles, statuses, actions and the four money answers get pairs; body prose stays single-language so pages don't double in length. Machine codes are never translated.</p>
+    <div class="demo-stage">
+      <div>
+        <div style="font-size:24px;font-weight:800;color:var(--fg-strong);letter-spacing:-.02em">Where does your money stand?</div>
+        <div style="color:var(--muted);font-size:17px;margin-top:4px">आपके पैसे अब कहाँ हैं — सीधा जवाब।</div>
+      </div>
+      <div style="font-size:15px"><b>Held</b> · <span style="color:var(--muted)">रोका गया</span> &nbsp;&nbsp;<b>Suspended</b> · <span style="color:var(--muted)">बंद</span> &nbsp;&nbsp;<b>Seizure</b> · <span style="color:var(--muted)">ज़ब्ती</span></div>
+    </div>
+    <div class="rules">
+      <div class="rule-card do"><b>Do:</b> keep Hindi visually quieter (muted, −2px size) — parity comes with Bhashini; today it's a support layer.</div>
+      <div class="rule-card dont"><b>Don't:</b> mix languages mid-sentence except the deliberate label pattern above.</div>
+    </div>
+    <table class="toks">
+      <tr><th>level</th><th>scale</th></tr>
+      <tr><td>H1 pair</td><td>clamp(27–38px) w800 ls−.02em / hi-line clamp(16–19px)</td></tr>
+      <tr><td>Section pair</td><td>19px w750 / 14.5px muted</td></tr>
+      <tr><td>Devanagari stack</td><td>"Noto Sans Devanagari" appended to --font</td></tr>
+    </table>
+  </section>
+
+  <!-- ==================== C7 NEEDS-YOU CARD ==================== -->
+  <section class="comp">
+    <div class="comp-h"><span class="cid">C7</span><h2>Needs-you card</h2><span class="cls">.needs · .actions-row · .basis · .btn.big</span></div>
+    <p class="comp-purpose">The only element allowed a coloured left edge (the one deliberate exception). One action per screen; its deadline rides in the header row; basis cites the rule underneath the fold of the card.</p>
+    <div class="demo-stage">
+      <div class="needs">
+        <div class="top">
+          <div><h3>One thing needs you today</h3><p class="hi-sub">आज आपसे एक काम है।</p></div>
+          <span class="clk clk-deadline">DEADLINE · 5 days left</span>
+        </div>
+        <div class="actions-row" style="margin-top:12px">
+          <a class="btn big" href="#">Review &amp; consent →</a>
+          <span class="clk clk-age">AGE · offer waiting 51 min</span>
+        </div>
+        <p class="basis">Basis: cited rule · due <b>Tue 1 Sep, 9:34 PM</b>.</p>
+      </div>
+    </div>
+    <div class="rules">
+      <div class="rule-card do"><b>Do:</b> pair every needs-you with an explicit “nothing else needs you” list somewhere nearby (see s1/s2 for the empty variants).</div>
+      <div class="rule-card dont"><b>Don't:</b> stack two needs-cards. Two actions means two beats, not one crowded card.</div>
+    </div>
+    <table class="toks">
+      <tr><th>part</th><th>value</th></tr>
+      <tr><td>border</td><td>1px accent 30% + 5px left edge --accent · radius --radius</td></tr>
+      <tr><td>title</td><td>20px w780</td></tr>
+      <tr><td>.btn.big</td><td>17px w700 · pad 15/26 · radius 12 · bg --accent</td></tr>
+    </table>
+  </section>
+
+  <!-- ==================== C8 WAITING ROW ==================== -->
+  <section class="comp">
+    <div class="comp-h"><span class="cid">C8</span><h2>Waiting-on-others row</h2><span class="cls">.waiting · .w-row</span></div>
+    <p class="comp-purpose">Follow-ups that run without the citizen, made visible so silence doesn't read as neglect. Every row ends in an AGE chip — staleness is shown, never hidden.</p>
+    <div class="demo-stage">
+      <div class="waiting">
+        <div class="w-head">Three follow-ups are running. None of them is yours.<span class="hi">तीन रास्ते चल रहे हैं</span></div>
+        <div class="w-row"><span class="nm">PayMate Wallet</span><span class="what">Hold request sent — no acknowledgement yet.</span><span class="clk clk-age">AGE · no reply 32 hrs</span></div>
+        <div class="w-row"><span class="nm">Unlocated ₹25,000</span><span class="what">Tracing continues at I4C.</span><span class="clk clk-age">AGE · unseen 30 hrs</span></div>
+      </div>
+    </div>
+    <div class="rules">
+      <div class="rule-card do"><b>Do:</b> name the owner and what exactly is owed (“written confirmation”).</div>
+      <div class="rule-card dont"><b>Don't:</b> put citizen-owned tasks here — those belong only in a needs-you card.</div>
+    </div>
+    <table class="toks">
+      <tr><th>part</th><th>value</th></tr>
+      <tr><td>.w-row</td><td>pad 13px 20px · name 150px bold · what flexible muted · AGE right-aligned</td></tr>
+    </table>
+  </section>
+
+  <!-- ==================== C9 STAGE RAIL ==================== -->
+  <section class="comp">
+    <div class="comp-h"><span class="cid">C9</span><h2>Journey stage rail</h2><span class="cls">.jrail · li.done / li.cur / .gap</span></div>
+    <p class="comp-purpose">Thin progress rail present on every journey screen. Product-framed (case stages, not demo chrome): done steps green-filled, current step blue-ringed, dashed gaps mark the two time-skips. Labels collapse to dots under 720px.</p>
+    <div class="demo-stage">
+      <nav class="jrail">
+        <ol>
+          <li class="done"><a href="#"><span class="dot"></span><span class="lbl">Reported</span></a></li>
+          <li class="done"><a href="#"><span class="dot"></span><span class="lbl">Logged</span></a></li>
+          <li class="gap" aria-hidden="true"></li>
+          <li class="cur" aria-current="step"><a href="#"><span class="dot"></span><span class="lbl">Money mapped</span></a></li>
+          <li><a href="#"><span class="dot"></span><span class="lbl">Your move</span></a></li>
+        </ol>
+      </nav>
+    </div>
+    <div class="rules">
+      <div class="rule-card do"><b>Do:</b> keep it one line tall (~34px) — presence, not navigation menu.</div>
+      <div class="rule-card dont"><b>Don't:</b> add screens to the rail that aren't beats; drill-downs get a DETAIL VIEW tag instead.</div>
+    </div>
+    <table class="toks">
+      <tr><th>part</th><th>value</th></tr>
+      <tr><td>container</td><td>pill container · border --border · overflow-x auto</td></tr>
+      <tr><td>.cur</td><td>bg --accent-wash · dot --accent + ring shadow 3px</td></tr>
+      <tr><td>.done</td><td>dot --c-confirm · label ink</td></tr>
+    </table>
+  </section>
+
+  <!-- ==================== C10 PRINT-SHEET HEADER ==================== -->
+  <section class="comp">
+    <div class="comp-h"><span class="cid">C10</span><h2>Print-sheet header</h2><span class="cls">.print-head · .ph-ref · .ph-qr · .ph-valid</span></div>
+    <p class="comp-purpose">For the offline world: branch visits, escalations, receipts. Hard 2px ink border, big mono reference, QR placeholder, validity line. Survives photocopying and low-end printers.</p>
+    <div class="demo-stage">
+      <div class="print-head">
+        <div>
+          <div class="ph-title">Complaint copy · शिकायत की प्रति</div>
+          <div class="ph-ref">NCRP/2025/88214</div>
+          <div class="ph-meta">Filed <b>25 Aug 2025, 9:34 PM</b> · Sector-21 Cyber PS (mock) · Complainant <b>Asha K.</b></div>
+        </div>
+        <div class="ph-qr" aria-hidden="true"></div>
+        <div class="ph-valid">Computer-generated record · mock exploration. Valid alongside the digital case file.</div>
+      </div>
+    </div>
+    <div class="rules">
+      <div class="rule-card do"><b>Do:</b> print in pure ink on paper white — tokens resolve to black/white automatically via @media print scoping per screen.</div>
+      <div class="rule-card dont"><b>Don't:</b> rely on colour for anything in this component; it's the fallback surface.</div>
+    </div>
+    <table class="toks">
+      <tr><th>part</th><th>value</th></tr>
+      <tr><td>frame</td><td>2px solid --fg-strong · radius 6px · grid 1fr/auto</td></tr>
+      <tr><td>.ph-ref</td><td>mono clamp(17–22px) w800 ls .04em</td></tr>
+      <tr><td>.ph-qr</td><td>74px · repeating-conic placeholder 12px cells</td></tr>
+    </table>
+  </section>
+
+  <footer class="colophon">Sheet version: turn 3 · documents assets/spine.css as shipped across b1–b7, case-overview, custody-map, institution-detail and s1–s4. Mock data throughout.</footer>
+
+</main>
+<script>
+document.querySelectorAll('.acc-h').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    var panel = document.getElementById(btn.getAttribute('data-acc'));
+    if(!panel) return;
+    var open = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', String(!open));
+    panel.hidden = open;
+  });
+});
+</script>
+</body>
+</html>
