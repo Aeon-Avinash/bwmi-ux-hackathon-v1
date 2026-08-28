@@ -79,3 +79,28 @@ Preview: `http://127.0.0.1:8767/`
 | Visual evidence | **PASS** | `post-fix-screenshots/dispatch-f/home.png`, `acknowledgement.png`, and `track-390.png` are fresh final captures. |
 
 **Dispatch F decision: GO for video capture.**
+
+## Dispatch G Re-gate
+
+Branch: `dispatch-g/seeded-case-discoverability`
+Preview: `http://127.0.0.1:8768/`
+
+| Gate | Result | Evidence |
+| --- | --- | --- |
+| Fixture verifier before/after | **PASS** | `verify-fixtures.mjs` reports `hints=4` and asserts the four trackable fixture ids, acknowledgements, and registered mobiles. |
+| Guided review discovery | **PASS** | Tracker inputs expose the Asha acknowledgement and mobile as placeholders and selectable/copyable values. The seeded hint card lists exactly the four trackable named records from fixtures; fill-on-tap populates, but does not submit, the gate. |
+| Asha spine via hint | **PASS** | Asha fill-on-tap → OTP toast → OTP verification reaches `#/status?ack=25082026000147`, with the three money-map states rendered. |
+| No-record boundary | **PASS** | A non-seeded acknowledgement shows the unchanged no-record message and exposes neither OTP nor mock SMS toast. |
+| Copy fallback and mobile | **PASS** | The clipboard-denied path selects the credential text; at 390px the mock SMS toast remains below the nav and clear of the acknowledgement input. |
+| RTL and desktop rails | **PASS** | Urdu tracker retains RTL platform content with LTR demo hints, Latin digits, no fallback underlines, and no overflow. Desktop measurements are 1140px container, 880px document rail, 820px form rail, and 1080px case/status rail. |
+| Scope and errors | **PASS** | No strings, i18n packs, codes, or ledger facts changed. Browser page-error logs were empty in the exercised paths. |
+
+## Dispatch G Visual Evidence
+
+- `post-fix-screenshots/dispatch-g/home-seeded-way-in.png`
+- `post-fix-screenshots/dispatch-g/track-hints-en.png`
+- `post-fix-screenshots/dispatch-g/track-hints-ur-390.png`
+- `post-fix-screenshots/dispatch-g/asha-money-map-via-hint.png`
+- `post-fix-screenshots/dispatch-g/acknowledgement-widened.png`
+
+**Dispatch G decision: pending final main-branch verification and merge.**

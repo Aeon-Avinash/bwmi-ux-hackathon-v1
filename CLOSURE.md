@@ -28,3 +28,10 @@ Dispatch F gate:
 - **PASS** named, anonymous, and track/no-record journeys at 390px with no overflow or browser page errors.
 - **PASS** final fixture verifier, JavaScript syntax, diff-scope review, and three fresh Dispatch F screenshots.
 - **GO** for video capture after Dispatch F.
+
+Dispatch G gate (pre-merge):
+
+- **PASS** fixture verifier now asserts the four seeded guided-review credentials against trackable ledger records.
+- **PASS** direct seeded-case discovery, fill-on-tap, OTP/status path, authentic no-record behavior, copy fallback, 390px toast clearance, Urdu LTR-demo/RTL-platform handling, and widened desktop rails.
+- **PASS** scope review: only app rendering, CSS, verifier coverage, documentation, and screenshots changed; locked strings, locale packs, codes, and ledger facts remain unchanged.
+- **PENDING** commit, PR merge, and a fresh verifier run on `main` before the final capture decision.
