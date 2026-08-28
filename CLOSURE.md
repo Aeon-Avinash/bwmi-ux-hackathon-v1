@@ -19,3 +19,12 @@ Gate results:
 - **PASS** key contrast samples: minimum measured ratio 5.48:1.
 - **PASS** five non-empty screenshots regenerated after the final changes.
 - **PASS** scope review: only the explicitly authorized `ledger.json` event replacement touched a locked surface; strings, codes, and `multilingual-packs/` remain unchanged.
+
+Dispatch F gate:
+
+- **PASS** unified 16px body, 28–32px page titles, 20px section headings, 1080px content, 696px narrow forms, 24px cards, and 48px/28px section rhythm.
+- **PASS** mouse locale changes retain programmatic main focus without a visible ring or transition; keyboard Tab focus retains a 3px visible ring.
+- **PASS** acknowledgement hierarchy and checklist bilingual rendering, including a 23-pair Kannada-primary audit with zero fallbacks.
+- **PASS** named, anonymous, and track/no-record journeys at 390px with no overflow or browser page errors.
+- **PASS** final fixture verifier, JavaScript syntax, diff-scope review, and three fresh Dispatch F screenshots.
+- **GO** for video capture after Dispatch F.

@@ -242,7 +242,16 @@
     root.innerHTML = chromeTop(route, crumbItems, opts.meta) +
       '<main id="main" tabindex="-1"' + (opts.narrow ? ' class="narrow"' : '') + '>' + inner + '</main>' +
       chromeFoot();
-    document.getElementById('main').focus({ preventScroll: true });
+    var main = document.getElementById('main');
+    var title = main.querySelector('h1');
+    if (title) {
+      var dateline = title.parentNode.querySelector(':scope > .dateline');
+      if (dateline && (dateline.compareDocumentPosition(title) & 4)) {
+        title.parentNode.insertBefore(title, dateline);
+      }
+      title.classList.add('page-title');
+    }
+    main.focus({ preventScroll: true });
     bindChrome();
   }
 
@@ -344,11 +353,11 @@
       { href: '#/register', key: 'chrome.navRegister' },
       { key: 'ack.title' }
     ],
+      '<h1>' + p('ack.title') + '</h1>' +
       '<div class="ack-card">' +
         '<p class="kicker">' + p('ack.kicker') + '</p>' +
-        '<h1>' + p('ack.title') + '</h1>' +
-        '<p class="ack-track">' + p('ack.youAreFiling') + ': <b>' + p(track === 'anonymous' ? 'ack.trackAnonymous' : track === 'wc' ? 'ack.trackWc' : track === 'other' ? 'ack.trackOther' : 'ack.trackFinancial') + '</b></p>' +
         '<div class="ack-body"><p>' + p('ack.p1') + '</p><p>' + p('ack.p2') + '</p></div>' +
+        '<p class="ack-track">' + p('ack.youAreFiling') + ': <b>' + p(track === 'anonymous' ? 'ack.trackAnonymous' : track === 'wc' ? 'ack.trackWc' : track === 'other' ? 'ack.trackOther' : 'ack.trackFinancial') + '</b></p>' +
         '<label class="check sign-row" style="margin-top:18px">' +
           '<input type="checkbox" id="ackChk">' +
           '<span>' + p('ack.check') + '</span>' +
@@ -380,7 +389,7 @@
       '<h1>' + p('login.title') + '</h1>' +
       '<p class="hi-line">' + p('login.lede') + '</p>' +
       '<div class="panel" style="margin-top:18px;max-width:520px">' +
-        '<p style="margin-top:8px;font-size:13.5px"><a class="link" href="#/login?track=' + encodeURIComponent(track) + '">' + p('login.newUser') + '</a></p>' +
+        '<p style="margin-top:8px"><a class="link" href="#/login?track=' + encodeURIComponent(track) + '">' + p('login.newUser') + '</a></p>' +
         '<div class="field"><label for="nm">' + p('login.name') + '</label>' +
           '<input id="nm" autocomplete="name" placeholder="' + t('login.namePh') + '"></div>' +
         '<div class="field"><label for="mob">' + p('login.mobile') + '</label>' +
@@ -390,7 +399,7 @@
         '</div>' +
         '<div class="otp-row" id="otpRow">' +
           otpInputs() +
-          '<button class="btn ghost" type="button" data-fill-otp style="padding:10px 14px;font-size:13.5px">Use the SMS code</button>' +
+          '<button class="btn ghost" type="button" data-fill-otp style="padding:10px 14px">Use the SMS code</button>' +
         '</div>' +
         '<p class="error" id="loginErr" hidden></p>' +
         '<div class="actions-row" style="margin-top:16px">' +
@@ -443,33 +452,34 @@
       { href: '#/login?track=' + encodeURIComponent(track), label: t('login.title') },
       { label: t('checklist.title') }
     ],
-      '<div class="panel" style="margin-top:18px">' +
-        '<div class="rule-title">— ' + t('checklist.titleExact') + ' —</div>' +
-        '<p class="warn-pink">' + t('checklist.intro') + '</p>' +
+      '<h1>' + p('checklist.title') + '</h1>' +
+      '<div class="panel checklist-panel">' +
+        '<div class="rule-title">' + p('checklist.titleExact') + '</div>' +
+        '<p class="warn-pink">' + p('checklist.intro') + '</p>' +
         '<div class="check-list">' +
-          '<h3>' + t('checklist.mandatoryTitle') + '</h3>' +
+          '<h3>' + p('checklist.mandatoryTitle') + '</h3>' +
           '<ol>' +
-            '<li>' + t('checklist.m1') + '</li>' +
-            '<li>' + t('checklist.m2') + '</li>' +
-            '<li>' + t('checklist.m3') + '</li>' +
-            '<li>' + t('checklist.m4') +
-              '<ol type="i"><li>' + t('checklist.m4i') + '</li><li>' + t('checklist.m4ii') + '</li>' +
-              '<li>' + t('checklist.m4iii') + '</li><li>' + t('checklist.m4iv') + '</li></ol></li>' +
-            '<li>' + t('checklist.m5') + '</li>' +
+            '<li>' + p('checklist.m1') + '</li>' +
+            '<li>' + p('checklist.m2') + '</li>' +
+            '<li>' + p('checklist.m3') + '</li>' +
+            '<li>' + p('checklist.m4') +
+              '<ol type="i"><li>' + p('checklist.m4i') + '</li><li>' + p('checklist.m4ii') + '</li>' +
+              '<li>' + p('checklist.m4iii') + '</li><li>' + p('checklist.m4iv') + '</li></ol></li>' +
+            '<li>' + p('checklist.m5') + '</li>' +
           '</ol>' +
-          '<h3>' + t('checklist.optionalTitle') + '</h3>' +
+          '<h3>' + p('checklist.optionalTitle') + '</h3>' +
           '<ol>' +
-            '<li>' + t('checklist.o1') + '</li>' +
-            '<li>' + t('checklist.o2') +
-              '<ol type="i"><li>' + t('checklist.o2i') + '</li><li>' + t('checklist.o2ii') + '</li>' +
-              '<li>' + t('checklist.o2iii') + '</li><li>' + t('checklist.o2iv') + '</li>' +
-              '<li>' + t('checklist.o2v') + '</li><li>' + t('checklist.o2vi') + '</li></ol></li>' +
+            '<li>' + p('checklist.o1') + '</li>' +
+            '<li>' + p('checklist.o2') +
+              '<ol type="i"><li>' + p('checklist.o2i') + '</li><li>' + p('checklist.o2ii') + '</li>' +
+              '<li>' + p('checklist.o2iii') + '</li><li>' + p('checklist.o2iv') + '</li>' +
+              '<li>' + p('checklist.o2v') + '</li><li>' + p('checklist.o2vi') + '</li></ol></li>' +
           '</ol>' +
         '</div>' +
         '<p class="basis" style="margin-top:16px">' + clockChip('DEADLINE', '24 hrs from first report', 'clk-deadline') + ' ' +
-          t('checklist.deadline') + '</p>' +
+          p('checklist.deadline') + '</p>' +
         '<div class="actions-row"><a class="btn big" href="#/complaint?track=' + encodeURIComponent(track) + '">' +
-          t('checklist.continue') + '</a></div>' +
+          p('checklist.continue') + '</a></div>' +
       '</div>',
       { narrow: true });
   }
@@ -595,7 +605,7 @@
           '<div class="char-meta"><span>' + t('complaint.detailsHint') + '</span>' +
           '<span>' + t('complaint.detailsMax', { n: '<b class="n" id="left">1500</b>' }) + '</span></div></div>' +
         '<div class="field"><label>' + t('complaint.idLabel') + '</label>' +
-          '<input id="fId" type="file" accept=".jpg,.jpeg,.png"><p style="font-size:13px;color:var(--muted);margin-top:6px">' + t('complaint.idNote') + '</p></div></fieldset>' +
+          '<input id="fId" type="file" accept=".jpg,.jpeg,.png"><p style="color:var(--muted);margin-top:6px">' + t('complaint.idNote') + '</p></div></fieldset>' +
         '<p class="error" id="cErr" hidden></p>' +
         '<div class="form-nav"><button class="btn" type="button" id="next0">' + t('complaint.saveNext') + '</button></div>';
       wireComplaintDraft(track, d);
@@ -606,7 +616,7 @@
     } else if (d.step === 1) {
       body.innerHTML =
         '<fieldset class="form-group"><legend class="form-kicker">' + t('complaint.stepSuspect') + '</legend>' +
-        '<p style="color:var(--muted);font-size:14.5px">' + t('complaint.suspectNote') + '</p>' +
+        '<p style="color:var(--muted)">' + t('complaint.suspectNote') + '</p>' +
         '<div class="field"><label>' + t('complaint.suspectName') + '</label><input id="sNm" value="' + esc(d.sName || '') + '"></div>' +
         '<div class="two-fields">' +
           '<div class="field"><label>' + t('complaint.suspectMobile') + '</label><input id="sMob" value="' + esc(d.sMob || '') + '"></div>' +
@@ -699,11 +709,11 @@
   function smsBox(d) {
     return '<div class="paste-box">' +
       '<label for="smsPaste">' + t('complaint.smsPaste') + '</label>' +
-      '<p style="font-size:13px;color:var(--muted);margin-top:3px">' + t('complaint.smsPasteHi') + '</p>' +
+      '<p style="color:var(--muted);margin-top:3px">' + t('complaint.smsPasteHi') + '</p>' +
       '<textarea id="smsPaste" placeholder="' + t('complaint.smsPh') + '">' + esc(d.sms || '') + '</textarea>' +
       '<div style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap">' +
-        '<button class="btn ghost" type="button" id="sampleBtn" style="padding:10px 16px;font-size:14px">' + t('complaint.smsSample') + '</button>' +
-        '<button class="btn ghost" type="button" id="fillBtn" style="padding:10px 16px;font-size:14px">' + t('complaint.smsFill') + '</button>' +
+        '<button class="btn ghost" type="button" id="sampleBtn" style="padding:10px 16px">' + t('complaint.smsSample') + '</button>' +
+        '<button class="btn ghost" type="button" id="fillBtn" style="padding:10px 16px">' + t('complaint.smsFill') + '</button>' +
       '</div>' +
       '<div class="extract-ok" id="extractOk" role="status">' +
         '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M4 12l6 6L20 6"/></svg> ' +
@@ -962,6 +972,7 @@
       { href: '#/', label: t('chrome.crumbHome') },
       { label: t('filed.title') }
     ],
+      '<h1>' + p('filed.title') + '</h1>' +
       '<div class="ack-hero">' +
         '<div class="print-head">' +
           '<div><div class="ph-title">' + t('filed.title') + '</div>' +
@@ -988,8 +999,8 @@
       { href: '#/', label: t('chrome.crumbHome') },
       { label: t('anonFiled.title') }
     ],
+      '<h1>' + p('anonFiled.title') + '</h1>' +
       '<div class="ack-hero">' +
-        '<h1>' + t('anonFiled.title') + '</h1>' +
         '<p class="hi-line" style="margin-top:8px">' + t('anonFiled.lede') + '</p>' +
         '<div class="print-head" style="margin-top:18px">' +
           '<div><div class="ph-title">' + t('anonFiled.refLabel') + '</div>' +
@@ -1020,11 +1031,11 @@
         '<div class="actions-row" style="margin-top:14px">' +
           '<button class="btn" type="button" id="getOtp">' + t('track.getOtp') + '</button></div>' +
         '<div class="otp-row" id="otpRow">' + otpInputs() +
-          '<button class="btn ghost" type="button" data-fill-otp style="padding:10px 14px;font-size:13.5px">Use the SMS code</button></div>' +
+          '<button class="btn ghost" type="button" data-fill-otp style="padding:10px 14px">Use the SMS code</button></div>' +
         '<p class="error" id="trErr" hidden></p>' +
         '<div class="actions-row" style="margin-top:14px">' +
           '<button class="btn big" type="button" data-verify-otp disabled>' + t('track.submit') + '</button></div>' +
-        '<p class="demo-ledger-hint" style="margin-top:18px;font-size:13px;color:var(--muted)">Mock ledger in this prototype: 25082026000147 · 27082026000101 · 18082026000109 · 15082026000112 · REF-260826-0413</p>' +
+        '<p class="demo-ledger-hint" style="margin-top:18px;color:var(--muted)">Mock ledger in this prototype: 25082026000147 · 27082026000101 · 18082026000109 · 15082026000112 · REF-260826-0413</p>' +
       '</div>',
       { narrow: true });
     var otp = wireOtp(document.getElementById('main'));
