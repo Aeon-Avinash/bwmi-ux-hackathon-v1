@@ -34,6 +34,10 @@
     return { path: h, q: q };
   }
   function digits(s) { return String(s || '').replace(/\D/g, ''); }
+  function clockChip(label, tail, cls) {
+    return '<span class="clk' + (cls ? ' ' + cls : '') + '"><span class="clk-key">' + esc(label) +
+      '</span>' + (tail ? '<span class="clk-tail">' + tail + '</span>' : '') + '</span>';
+  }
 
   /* ---------- OTP toast: displayed code is the only valid code ---------- */
   function makeOtp() {
@@ -41,6 +45,10 @@
   }
   function showToast(from, body) {
     var el = document.getElementById('toast');
+    var nav = document.querySelector('.gov-nav');
+    if (nav) {
+      el.style.setProperty('--toast-top', Math.ceil(nav.getBoundingClientRect().bottom + window.scrollY) + 'px');
+    }
     el.hidden = false;
     el.innerHTML = '<div class="from">' + esc(from) + '</div><div class="body">' + body + '</div>';
   }
@@ -402,7 +410,7 @@
       err.hidden = true;
       sendLoginOtp(mob);
       otp.row.classList.add('show');
-      otp.inputs[0].focus();
+      otp.inputs[0].focus({ preventScroll: true });
     });
     document.querySelector('[data-verify-otp]').addEventListener('click', function () {
       var name = document.getElementById('nm').value.trim();
@@ -458,7 +466,7 @@
               '<li>' + t('checklist.o2v') + '</li><li>' + t('checklist.o2vi') + '</li></ol></li>' +
           '</ol>' +
         '</div>' +
-        '<p class="basis" style="margin-top:16px"><span class="clk clk-deadline">DEADLINE · 24 hrs from first report</span> ' +
+        '<p class="basis" style="margin-top:16px">' + clockChip('DEADLINE', '24 hrs from first report', 'clk-deadline') + ' ' +
           t('checklist.deadline') + '</p>' +
         '<div class="actions-row"><a class="btn big" href="#/complaint?track=' + encodeURIComponent(track) + '">' +
           t('checklist.continue') + '</a></div>' +
@@ -537,6 +545,7 @@
     var d = draft;
     if (d.step === 0) {
       body.innerHTML =
+        '<fieldset class="form-group"><legend class="form-kicker">' + t('complaint.stepIncident') + '</legend>' +
         (track === 'financial' ? smsBox(d) : '') +
         '<div class="field"><label>' + t('complaint.category') + ' <small>*</small></label>' +
           '<select id="fCat">' + catOptions(track, d.category) + '</select></div>' +
@@ -551,7 +560,8 @@
             '</div></div>' +
         '</div>' +
         '<div class="field"><label>' + t('complaint.delay') + '</label>' +
-          '<input id="fDelay" value="' + esc(d.delay || '') + '"></div>' +
+          '<input id="fDelay" value="' + esc(d.delay || '') + '"></div></fieldset>' +
+        '<fieldset class="form-group"><legend class="form-kicker">' + t('complaint.state') + '</legend>' +
         '<div class="two-fields">' +
           '<div class="field"><label>' + t('complaint.state') + ' <small>*</small></label>' +
             '<select id="fState">' + stateOptions(d.state) + '</select></div>' +
@@ -563,8 +573,9 @@
         '<div class="field"><label>' + t('complaint.where') + ' <small>*</small></label>' +
           '<select id="fWhere"><option value="">' + t('common.select') + '</option>' +
           '<option' + (d.where === t('complaint.whereOnline') ? ' selected' : '') + '>' + t('complaint.whereOnline') + '</option>' +
-          '<option' + (d.where === t('complaint.whereOffline') ? ' selected' : '') + '>' + t('complaint.whereOffline') + '</option></select></div>' +
+          '<option' + (d.where === t('complaint.whereOffline') ? ' selected' : '') + '>' + t('complaint.whereOffline') + '</option></select></div></fieldset>' +
         (track === 'financial' ? (
+          '<fieldset class="form-group"><legend class="form-kicker">' + t('home.cardFinTitle') + '</legend>' +
           '<div class="two-fields">' +
             '<div class="field"><label>' + t('complaint.amount') + ' <small>*</small></label>' +
               '<input id="fAmt" inputmode="numeric" value="' + esc(d.amount || '') + '"></div>' +
@@ -576,14 +587,15 @@
               '<input id="fUtr" maxlength="12" value="' + esc(d.utr || '') + '"></div>' +
             '<div class="field"><label>' + t('complaint.account') + '</label>' +
               '<input id="fAc" maxlength="4" value="' + esc(d.ac || '') + '"></div>' +
-          '</div>'
+          '</div></fieldset>'
         ) : '') +
+        '<fieldset class="form-group"><legend class="form-kicker">' + t('complaint.details') + '</legend>' +
         '<div class="field"><label>' + t('complaint.details') + ' <small>*</small></label>' +
           '<textarea id="fDet" maxlength="1500">' + esc(d.details || '') + '</textarea>' +
           '<div class="char-meta"><span>' + t('complaint.detailsHint') + '</span>' +
           '<span>' + t('complaint.detailsMax', { n: '<b class="n" id="left">1500</b>' }) + '</span></div></div>' +
         '<div class="field"><label>' + t('complaint.idLabel') + '</label>' +
-          '<input id="fId" type="file" accept=".jpg,.jpeg,.png"><p style="font-size:13px;color:var(--muted);margin-top:6px">' + t('complaint.idNote') + '</p></div>' +
+          '<input id="fId" type="file" accept=".jpg,.jpeg,.png"><p style="font-size:13px;color:var(--muted);margin-top:6px">' + t('complaint.idNote') + '</p></div></fieldset>' +
         '<p class="error" id="cErr" hidden></p>' +
         '<div class="form-nav"><button class="btn" type="button" id="next0">' + t('complaint.saveNext') + '</button></div>';
       wireComplaintDraft(track, d);
@@ -593,6 +605,7 @@
       });
     } else if (d.step === 1) {
       body.innerHTML =
+        '<fieldset class="form-group"><legend class="form-kicker">' + t('complaint.stepSuspect') + '</legend>' +
         '<p style="color:var(--muted);font-size:14.5px">' + t('complaint.suspectNote') + '</p>' +
         '<div class="field"><label>' + t('complaint.suspectName') + '</label><input id="sNm" value="' + esc(d.sName || '') + '"></div>' +
         '<div class="two-fields">' +
@@ -600,7 +613,7 @@
           '<div class="field"><label>' + t('complaint.suspectEmail') + '</label><input id="sEm" value="' + esc(d.sEm || '') + '"></div>' +
         '</div>' +
         '<div class="field"><label>' + t('complaint.suspectUpi') + '</label><input id="sUpi" value="' + esc(d.sUpi || '') + '"></div>' +
-        '<div class="field"><label>' + t('complaint.evidenceLabel') + '</label><input id="sEv" type="file" multiple accept=".jpg,.jpeg,.png,.pdf"></div>' +
+        '<div class="field"><label>' + t('complaint.evidenceLabel') + '</label><input id="sEv" type="file" multiple accept=".jpg,.jpeg,.png,.pdf"></div></fieldset>' +
         '<div class="form-nav">' +
           '<button class="btn ghost" type="button" id="back1">' + t('complaint.back') + '</button>' +
           '<button class="btn" type="button" id="next1">' + t('complaint.saveNext') + '</button>' +
@@ -820,6 +833,7 @@
     var body = document.getElementById('formBody');
     if (d.step === 0) {
       body.innerHTML =
+        '<fieldset class="form-group"><legend class="form-kicker">' + t('complaint.stepIncident') + '</legend>' +
         '<div class="field"><label>' + t('anonForm.category') + ' <small>*</small></label>' +
           '<select id="fCat">' + anonCats(d.category) + '</select></div>' +
         '<div class="banner-proposed" style="margin-top:12px">' + t('anonForm.kindly') + '</div>' +
@@ -832,7 +846,8 @@
               '<input id="fMm" maxlength="2" placeholder="' + t('complaint.mm') + '" value="' + esc(d.mm || '') + '" style="width:70px">' +
               '<select id="fAp" style="width:90px"><option>AM</option><option>PM</option></select>' +
             '</div></div></div>' +
-        '<div class="field"><label>' + t('complaint.delay') + '</label><input id="fDelay" value="' + esc(d.delay || '') + '"></div>' +
+        '<div class="field"><label>' + t('complaint.delay') + '</label><input id="fDelay" value="' + esc(d.delay || '') + '"></div></fieldset>' +
+        '<fieldset class="form-group"><legend class="form-kicker">' + t('complaint.state') + '</legend>' +
         '<div class="two-fields">' +
           '<div class="field"><label>' + t('complaint.state') + ' <small>*</small></label><select id="fState">' + stateOptions(d.state) + '</select></div>' +
           '<div class="field"><label>' + t('complaint.district') + ' <small>*</small></label><select id="fDist">' + districtOptions(d.state || '', d.district) + '</select></div>' +
@@ -840,11 +855,12 @@
         '<div class="field"><label>' + t('complaint.ps') + '</label><input id="fPs" value="' + esc(d.ps || '') + '"></div>' +
         '<div class="field"><label>' + t('complaint.where') + ' <small>*</small></label>' +
           '<select id="fWhere"><option value="">' + t('common.select') + '</option>' +
-          '<option>' + t('complaint.whereOnline') + '</option><option>' + t('complaint.whereOffline') + '</option></select></div>' +
+          '<option>' + t('complaint.whereOnline') + '</option><option>' + t('complaint.whereOffline') + '</option></select></div></fieldset>' +
+        '<fieldset class="form-group"><legend class="form-kicker">' + t('complaint.details') + '</legend>' +
         '<div class="field"><label>' + t('complaint.details') + ' <small>*</small></label>' +
           '<textarea id="fDet" maxlength="1500">' + esc(d.details || '') + '</textarea>' +
           '<div class="char-meta"><span>' + t('complaint.detailsHint') + '</span>' +
-          '<span>' + t('complaint.detailsMax', { n: '<b class="n" id="left">1500</b>' }) + '</span></div></div>' +
+          '<span>' + t('complaint.detailsMax', { n: '<b class="n" id="left">1500</b>' }) + '</span></div></div></fieldset>' +
         '<p class="error" id="cErr" hidden></p>' +
         '<div class="form-nav"><button class="btn" type="button" id="next0">' + t('complaint.saveNext') + '</button></div>';
       if (d.ap) document.getElementById('fAp').value = d.ap;
@@ -861,9 +877,10 @@
       });
     } else if (d.step === 1) {
       body.innerHTML =
+        '<fieldset class="form-group"><legend class="form-kicker">' + t('complaint.stepSuspect') + '</legend>' +
         '<p style="color:var(--muted)">' + t('complaint.suspectNote') + '</p>' +
         '<div class="field"><label>' + t('complaint.suspectName') + '</label><input id="sNm" value="' + esc(d.sName || '') + '"></div>' +
-        '<div class="field"><label>' + t('complaint.suspectUpi') + '</label><input id="sUpi" value="' + esc(d.sUpi || '') + '" placeholder="URL / handle / number"></div>' +
+        '<div class="field"><label>' + t('complaint.suspectUpi') + '</label><input id="sUpi" value="' + esc(d.sUpi || '') + '" placeholder="URL / handle / number"></div></fieldset>' +
         '<div class="form-nav">' +
           '<button class="btn ghost" type="button" id="back1">' + t('complaint.back') + '</button>' +
           '<button class="btn" type="button" id="next1">' + t('complaint.saveNext') + '</button></div>';
@@ -1007,7 +1024,7 @@
         '<p class="error" id="trErr" hidden></p>' +
         '<div class="actions-row" style="margin-top:14px">' +
           '<button class="btn big" type="button" data-verify-otp disabled>' + t('track.submit') + '</button></div>' +
-        '<p style="margin-top:18px;font-size:13px;color:var(--muted)">Mock ledger in this prototype: 25082026000147 · 27082026000101 · 18082026000109 · 15082026000112 · REF-260826-0413</p>' +
+        '<p class="demo-ledger-hint" style="margin-top:18px;font-size:13px;color:var(--muted)">Mock ledger in this prototype: 25082026000147 · 27082026000101 · 18082026000109 · 15082026000112 · REF-260826-0413</p>' +
       '</div>',
       { narrow: true });
     var otp = wireOtp(document.getElementById('main'));
@@ -1024,7 +1041,7 @@
       err.hidden = true;
       sendTrackOtp(mob, ack);
       otp.row.classList.add('show');
-      otp.inputs[0].focus();
+      otp.inputs[0].focus({ preventScroll: true });
     });
     document.querySelector('[data-verify-otp]').addEventListener('click', function () {
       var ack = document.getElementById('ackIn').value.trim();
@@ -1063,7 +1080,7 @@
           stat('s-held', 'status.held', rec.split.held) +
           stat('s-pend', 'status.requested', rec.split.requested) +
           stat('s-unloc', 'status.unlocated', rec.split.unlocated) +
-          stat('s-ret', 'status.returned', rec.split.returned) +
+          (rec.split.returned ? stat('s-ret', 'status.returned', rec.split.returned) : '') +
         '</div>' +
         '<p class="strip-note">' + p('status.conservation') + ': <span class="tnum">' +
           NCRP.inr(rec.split.held) + ' + ' + NCRP.inr(rec.split.requested) + ' + ' + NCRP.inr(rec.split.unlocated) +
@@ -1071,8 +1088,9 @@
           ' = ' + NCRP.inr(cons.sum) +
           '</span>' +
           (cons.ok ? '' : ' · mismatch') +
-          (rec.split.leak ? ' · ' + p('status.leakNote') : '') +
-        '</p></section>';
+        '</p>' +
+        (rec.split.leak ? '<div class="leak-row tnum">' + p('status.leakNote') + '</div>' : '') +
+        '</section>';
     }
 
     var holds = '';
@@ -1087,8 +1105,8 @@
             (h.slip ? ' <span class="code-chip">' + esc(h.slip) + '</span>' : '') + '</div>' +
             '<p>' + esc(h.note) + '</p>' +
             (released
-              ? '<span class="clk clk-done">released ' + esc(NCRP.formatStamp(h.releasedAt)) + '</span>'
-              : '<span class="clk clk-age">AGE · ' + esc(NCRP.clockDiff(h.placedAt, now)) + '</span>') +
+              ? clockChip('RELEASED', esc(NCRP.formatStamp(h.releasedAt)), 'clk-done')
+              : clockChip('AGE', esc(NCRP.clockDiff(h.placedAt, now)), 'clk-age')) +
             '</article>';
         }).join('') + '</div></section>';
     }
@@ -1106,7 +1124,7 @@
     var gated = '';
     if (rec.closeGated && !rec.citizenConfirmedAt) {
       gated = '<div class="needs" style="margin-top:22px"><div class="top"><div><h3>' + t('status.closeGated') + '</h3></div>' +
-        '<span class="clk clk-target">TARGET · OURS [PROPOSED]</span></div>' +
+        clockChip('TARGET', 'OURS [PROPOSED]', 'clk-target') + '</div>' +
         '<div class="actions-row"><button class="btn big" type="button" id="confirmRet">' + t('status.confirmReturn') + '</button></div></div>';
     } else if (rec.citizenConfirmedAt) {
       gated = '<p class="extract-ok show" style="display:flex;margin-top:18px">' + t('status.confirmedReturn') + '</p>';
@@ -1123,11 +1141,11 @@
     ],
       '<p class="dateline">' + t('status.category') + ': ' + esc(rec.categoryLabel) + ' · ' +
         t('status.complainant') + ' ' + esc(rec.complainant || '—') + '</p>' +
-      '<h1>' + p('status.title') + '</h1>' +
+      '<h1 class="status-heading">' + p('status.title') + '</h1>' +
       '<p class="hi-line">' + p('status.day', { n: day }) + '</p>' +
       '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">' +
-        '<span class="clk">ELAPSED · ' + esc(elapsed) + ' ' + p('status.sinceTheft') + '</span>' +
-        (rec.lastConfirmedAt ? '<span class="clk clk-age">AGE · ' + esc(NCRP.clockDiff(rec.lastConfirmedAt, now)) + '</span>' : '') +
+        clockChip('ELAPSED', esc(elapsed) + ' ' + p('status.sinceTheft')) +
+        (rec.lastConfirmedAt ? clockChip('AGE', esc(NCRP.clockDiff(rec.lastConfirmedAt, now)), 'clk-age') : '') +
         deadlineChips(rec, now) +
       '</div>' +
       money + holds + flags + gated +
@@ -1157,9 +1175,9 @@
   function deadlineChips(rec, now) {
     return (rec.deadlines || []).map(function (d) {
       var left = Date.parse(d.dueAt) - Date.parse(now);
-      if (d.met) return '<span class="clk clk-done">DEADLINE met · ' + esc(d.citation) + '</span>';
+      if (d.met) return clockChip('DEADLINE met', esc(d.citation), 'clk-done');
       var label = left < 0 ? 'lapsed' : NCRP.clockDiff(now, d.dueAt) + ' left';
-      return '<span class="clk clk-deadline">DEADLINE · ' + esc(label) + ' · ' + esc(d.citation) + '</span>';
+      return clockChip('DEADLINE', esc(label) + ' · ' + esc(d.citation), 'clk-deadline');
     }).join('');
   }
   function eventBand(title, events, reconstructed) {
@@ -1169,7 +1187,7 @@
       events.map(function (e) {
         var prov = e.provenance === 'ASSUMPTION' ? '<span class="prov prov-a">[ASSUMPTION]</span>'
           : e.provenance === 'PROPOSED' ? '<span class="prov prov-p">[PROPOSED]</span>'
-          : '<span class="prov prov-p">CONFIRMED</span>';
+          : '<span class="prov prov-confirmed">CONFIRMED</span>';
         return '<article class="ev"><span class="t">' + esc(NCRP.formatWhenShort(e.at)) + '</span>' +
           '<div class="body"><p class="p">' + esc(e.text) + '</p>' +
           '<div class="meta"><span class="author-chip">● ' + esc(e.author) + '</span>' +

@@ -28,7 +28,7 @@
   };
   NCRP.RTL = { ur: true, ks: true, sd: true };
   NCRP.locale = "hi";
-  NCRP.regionalPrimary = true;
+  NCRP.regionalPrimary = false;
   NCRP.stringsEn = null;
   NCRP.stringsHi = null;
   NCRP.strings = null;
@@ -119,6 +119,9 @@
     if (en == null) en = path;
     var hit = NCRP.lookup(path, vars);
     var regional = hit.text != null ? hit.text : en;
+    if (String(regional).trim() === String(en).trim()) {
+      return '<span class="bilingual-pair single-line"><span class="line-primary">' + esc(en) + '</span></span>';
+    }
     var lang = hit.fallback ? "hi" : NCRP.locale;
     var dir = NCRP.RTL[lang] ? "rtl" : "ltr";
     var regInner = esc(regional);
