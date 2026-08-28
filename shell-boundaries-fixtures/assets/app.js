@@ -1139,6 +1139,7 @@
     });
     document.querySelector('[data-verify-otp]').addEventListener('click', function () {
       var ack = document.getElementById('ackIn').value.trim();
+      var mob = digits(document.getElementById('mobIn').value);
       var err = document.getElementById('trErr');
       var last = session().lastOtp;
       if (!last || last.purpose !== 'track' || last.ack !== ack) { showErr(err, t('login.otpMissing')); return; }

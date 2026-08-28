@@ -33,3 +33,4 @@
 - `shell-boundaries-fixtures/assets/verify-fixtures.mjs` -> asserted the four guided-review acknowledgements and registered mobiles against the trackable fixture records -> prevent hint credentials from drifting from mock data.
 - `post-fix-screenshots/dispatch-g/*.png` -> captured home discoverability, tracker hints in English and Urdu, seeded Asha status, and a widened acknowledgement screen -> retain visual evidence for the guided-review path.
 - `shell-boundaries-fixtures/assets/app.js` -> gated `Your Case` and the status route behind a matching acknowledgement/mobile mock-OTP proof, clearing that proof when filing starts -> keep the seeded case spine available only through the Track your Complaint drill.
+- `shell-boundaries-fixtures/assets/app.js` -> read the registered mobile within the successful track-OTP handler before persisting the access proof -> prevent the View status path from throwing a scope error.
