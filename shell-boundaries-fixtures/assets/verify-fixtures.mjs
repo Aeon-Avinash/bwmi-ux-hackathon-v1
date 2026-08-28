@@ -99,6 +99,24 @@ if (d12.split.held + d12.split.requested + d12.split.unlocated + d12.split.retur
   fail('day12 conservation');
 }
 
+const demoHintCases = [
+  ['asha-day2', '25082026000147', '9876504412'],
+  ['ravi-day0', '27082026000101', '9810027001'],
+  ['meera-day9', '18082026000109', '9822011809'],
+  ['farhan-day12', '15082026000112', '9900015012']
+];
+if (ledger.records.filter((r) => r.boundary === 'TRACKABLE').length !== demoHintCases.length) {
+  fail('seeded hint cases must include exactly the four trackable fixture records');
+}
+demoHintCases.forEach(([id, ack, mobile]) => {
+  const record = rec(id);
+  if (!record) return fail('seeded hint record missing: ' + id);
+  if (record.boundary !== 'TRACKABLE') fail('seeded hint record is not trackable: ' + id);
+  if (record.ack !== ack || record.mobile !== mobile) {
+    fail('seeded hint credentials drifted for ' + id);
+  }
+});
+
 ledger.records.filter((r) => r.boundary === 'TRACKABLE').forEach((r) => {
   if (!/^\d{14}$/.test(r.ack)) fail('trackable ack not 14 digits: ' + r.ack);
   if (r.split) {
@@ -113,4 +131,4 @@ if (errors.length) {
   process.exit(1);
 }
 console.log('OK  codes=' + codes.codes.length +
-  '  asha=₹98,500  elapsed=36h36m  holdAGE=33h07m  anon=REF-260826-0413');
+  '  asha=₹98,500  elapsed=36h36m  holdAGE=33h07m  hints=4  anon=REF-260826-0413');

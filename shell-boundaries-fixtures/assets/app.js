@@ -3,6 +3,8 @@
   var t = function (path, v) { return NCRP.t(path, v); };
   var p = function (path, v) { return NCRP.pair(path, v); };
   var SESS = 'ncrp-packet-b-session';
+  var DEMO_FINE_PRINT = 'This is part of the guided review, & not part of the actual platform.';
+  var DEMO_TRACKABLE_IDS = ['asha-day2', 'ravi-day0', 'meera-day9', 'farhan-day12'];
 
   function esc(s) {
     return String(s == null ? '' : s)
@@ -240,7 +242,8 @@
     opts = opts || {};
     var root = document.getElementById('portal');
     root.innerHTML = chromeTop(route, crumbItems, opts.meta) +
-      '<main id="main" tabindex="-1"' + (opts.narrow ? ' class="narrow"' : '') + '>' + inner + '</main>' +
+      '<main id="main" tabindex="-1"' + ((opts.narrow || opts.mainClass) ? ' class="' +
+        (opts.narrow ? 'narrow ' : '') + (opts.mainClass || '') + '"' : '') + '>' + inner + '</main>' +
       chromeFoot();
     var main = document.getElementById('main');
     var title = main.querySelector('h1');
@@ -278,6 +281,42 @@
         NCRP.applyLocaleChrome();
         render();
       });
+    }
+    document.querySelectorAll('[data-demo-copy]').forEach(function (button) {
+      button.addEventListener('click', function () {
+        copyDemoValue(button.getAttribute('data-demo-copy'), button.closest('.demo-copy-line'));
+      });
+    });
+    document.querySelectorAll('[data-demo-select]').forEach(function (value) {
+      value.addEventListener('click', function () {
+        copyDemoValue(value.getAttribute('data-demo-select'), value);
+      });
+    });
+    document.querySelectorAll('[data-demo-fill]').forEach(function (button) {
+      button.addEventListener('click', function () {
+        var ackIn = document.getElementById('ackIn');
+        var mobIn = document.getElementById('mobIn');
+        if (!ackIn || !mobIn) return;
+        ackIn.value = button.getAttribute('data-demo-ack');
+        mobIn.value = button.getAttribute('data-demo-mobile');
+        ackIn.focus({ preventScroll: true });
+      });
+    });
+  }
+
+  function copyDemoValue(value, fallback) {
+    function selectFallback() {
+      if (!fallback) return;
+      var range = document.createRange();
+      range.selectNodeContents(fallback);
+      var selection = window.getSelection();
+      selection.removeAllRanges();
+      selection.addRange(range);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(value).catch(selectFallback);
+    } else {
+      selectFallback();
     }
   }
   function applyFont() {
@@ -329,6 +368,8 @@
           '<div class="ctas"><a class="btn" href="#/acknowledge?track=other">' + p('home.cardOtherCta') + '</a></div>' +
         '</article>' +
       '</section>' +
+      '<aside class="demo-home-line"><a href="#/track">Reviewing the demo? Seeded mock cases are listed on the track screen.</a>' +
+        '<p class="demo-fine">' + DEMO_FINE_PRINT + '</p></aside>' +
       '<aside class="ticker"><h2>' + p('home.updatesTitle') + '</h2>' +
         '<ul><li>' + p('home.ticker1') + '</li><li>' + p('home.ticker2') + '</li><li>' + p('home.ticker3') + '</li></ul>' +
       '</aside>' +
@@ -367,7 +408,7 @@
           '<a class="link" href="#/">' + t('ack.back') + '</a>' +
         '</div>' +
       '</div>',
-      { narrow: true });
+      { mainClass: 'document-main' });
     var chk = document.getElementById('ackChk');
     var goBtn = document.getElementById('ackGo');
     chk.addEventListener('change', function () { goBtn.disabled = !chk.checked; });
@@ -407,7 +448,7 @@
           '<button class="btn ghost" type="button" id="clearLogin">' + t('login.clear') + '</button>' +
         '</div>' +
       '</div>',
-      { narrow: true });
+      { mainClass: 'document-main' });
 
     var otp = wireOtp(document.getElementById('main'));
     document.getElementById('getOtp').addEventListener('click', function () {
@@ -481,7 +522,7 @@
         '<div class="actions-row"><a class="btn big" href="#/complaint?track=' + encodeURIComponent(track) + '">' +
           p('checklist.continue') + '</a></div>' +
       '</div>',
-      { narrow: true });
+      { mainClass: 'document-main' });
   }
 
   var BLOCKED = /[#$@*^"~!\]`|{}<>]/;
@@ -520,7 +561,7 @@
         tabBtn(2, t('complaint.stepPreview'), draft.step) +
       '</div>' +
       '<div class="form-body" id="formBody"></div>',
-      { narrow: true });
+      { mainClass: 'form-main' });
     paintComplaintStep(track, draft);
     document.querySelectorAll('.form-tabs button').forEach(function (b) {
       b.addEventListener('click', function () {
@@ -817,7 +858,7 @@
         tabBtn(1, t('complaint.stepSuspect'), d.step) +
         tabBtn(2, t('complaint.stepPreview'), d.step) +
       '</div><div class="form-body" id="formBody"></div>',
-      { narrow: true });
+      { mainClass: 'form-main' });
     paintAnon(d);
     document.querySelectorAll('.form-tabs button').forEach(function (b) {
       b.addEventListener('click', function () {
@@ -989,7 +1030,7 @@
           '<a class="btn ghost" href="#/">' + t('filed.homeCta') + '</a>' +
         '</div>' +
       '</div>',
-      { narrow: true });
+      { mainClass: 'document-main' });
   }
 
   function anonFiled(route) {
@@ -1013,7 +1054,43 @@
         '<div class="boundary-note">' + t('anonFiled.boundary') + '</div>' +
         '<div class="actions-row"><a class="btn" href="#/">' + t('anonFiled.homeCta') + '</a></div>' +
       '</div>',
-      { narrow: true });
+      { mainClass: 'document-main' });
+  }
+
+  function demoTrackRecords() {
+    return DEMO_TRACKABLE_IDS.map(function (id) {
+      return NCRP.store.records.filter(function (record) { return record.id === id; })[0];
+    }).filter(Boolean);
+  }
+
+  function demoCopyValue(label, value) {
+    return '<span class="demo-copy-line"><span class="demo-copy-label">' + esc(label) + '</span>' +
+      '<code class="demo-value tnum" data-demo-select="' + esc(value) + '" tabindex="0">' + esc(value) + '</code>' +
+      '<button class="demo-copy" type="button" data-demo-copy="' + esc(value) + '">Copy</button></span>';
+  }
+
+  function demoCaseStage(record) {
+    if (record.id === 'asha-day2') {
+      return 'Asha — full money map: ' + NCRP.inr(record.split.held) + ' held · ' +
+        NCRP.inr(record.split.requested) + ' freeze requested · ' + NCRP.inr(record.split.unlocated) + ' unlocated';
+    }
+    var latest = (record.events || []).slice(-1)[0];
+    return latest ? latest.text : record.status;
+  }
+
+  function demoHintsCard() {
+    return '<aside class="demo-hints" aria-label="Seeded mock cases">' +
+      '<p class="demo-kicker">DEMO HINTS — SEEDED MOCK CASES</p>' +
+      '<div class="demo-case-list">' + demoTrackRecords().map(function (record) {
+        return '<article class="demo-case">' +
+          '<button class="demo-case-fill" type="button" data-demo-fill data-demo-ack="' + esc(record.ack) +
+            '" data-demo-mobile="' + esc(record.mobile) + '">' +
+            '<code class="tnum">' + esc(record.ack) + '</code><span>' + esc(demoCaseStage(record)) + '</span></button>' +
+          '<div class="demo-case-values">' +
+            demoCopyValue('Ack', record.ack) + demoCopyValue('Mobile', record.mobile) +
+          '</div></article>';
+      }).join('') + '</div>' +
+      '<p class="demo-fine">' + DEMO_FINE_PRINT + '</p></aside>';
   }
 
   function track(route) {
@@ -1023,11 +1100,15 @@
     ],
       '<h1>' + p('track.title') + '</h1>' +
       '<p class="hi-line">' + p('track.lede') + '</p>' +
-      '<div class="panel" style="margin-top:18px;max-width:540px">' +
+      '<div class="panel track-gate" style="margin-top:18px;max-width:540px">' +
         '<div class="field"><label>' + t('track.ack') + '</label>' +
-          '<input id="ackIn" inputmode="numeric" placeholder="' + t('track.ackPh') + '"></div>' +
+          '<input id="ackIn" inputmode="numeric" placeholder="25082026000147">' +
+          demoCopyValue('Demo acknowledgement', '25082026000147') + '</div>' +
         '<div class="field"><label>' + t('track.mobile') + '</label>' +
-          '<input id="mobIn" inputmode="numeric" maxlength="10"></div>' +
+          '<input id="mobIn" inputmode="numeric" maxlength="10" placeholder="9876504412">' +
+          demoCopyValue('Demo mobile', '9876504412') + '</div>' +
+        '<div class="demo-gate-helper">Demo build on mock data — use the seeded case shown to view a live case file. Any other number shows the authentic no-record path.' +
+          '<p class="demo-fine">' + DEMO_FINE_PRINT + '</p></div>' +
         '<div class="actions-row" style="margin-top:14px">' +
           '<button class="btn" type="button" id="getOtp">' + t('track.getOtp') + '</button></div>' +
         '<div class="otp-row" id="otpRow">' + otpInputs() +
@@ -1035,7 +1116,7 @@
         '<p class="error" id="trErr" hidden></p>' +
         '<div class="actions-row" style="margin-top:14px">' +
           '<button class="btn big" type="button" data-verify-otp disabled>' + t('track.submit') + '</button></div>' +
-        '<p class="demo-ledger-hint" style="margin-top:18px;color:var(--muted)">Mock ledger in this prototype: 25082026000147 · 27082026000101 · 18082026000109 · 15082026000112 · REF-260826-0413</p>' +
+        demoHintsCard() +
       '</div>',
       { narrow: true });
     var otp = wireOtp(document.getElementById('main'));
@@ -1163,7 +1244,7 @@
       eventBand(t('status.events'), conf, false) +
       (recn.length ? eventBand(t('status.reconstructed'), recn, true) : '') +
       '<p class="colophon">' + t('status.nothingElse') + '</p>',
-      { meta: meta });
+      { meta: meta, mainClass: 'status-main' });
 
     var btn = document.getElementById('confirmRet');
     if (btn) {
