@@ -104,3 +104,11 @@ Preview: `http://127.0.0.1:8768/`
 - `post-fix-screenshots/dispatch-g/acknowledgement-widened.png`
 
 **Dispatch G decision: pending final main-branch verification and merge.**
+
+## Case Access Guard
+
+| Gate | Result | Evidence |
+| --- | --- | --- |
+| Direct status route | **PASS** | `#/status` and acknowledgement-mismatched status URLs redirect to `#/track` without a matching track-OTP session proof. |
+| Tracked seeded case | **PASS** | Successful acknowledgement/mobile OTP stores the exact proof and unlocks only its matching case file and nav item. |
+| Filing separation | **PASS** | Entering any filing acknowledgement interstitial clears the tracked-case proof, so a new filing journey cannot expose an earlier case file. |

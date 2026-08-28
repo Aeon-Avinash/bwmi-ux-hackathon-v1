@@ -35,3 +35,8 @@ Dispatch G gate (pre-merge):
 - **PASS** direct seeded-case discovery, fill-on-tap, OTP/status path, authentic no-record behavior, copy fallback, 390px toast clearance, Urdu LTR-demo/RTL-platform handling, and widened desktop rails.
 - **PASS** scope review: only app rendering, CSS, verifier coverage, documentation, and screenshots changed; locked strings, locale packs, codes, and ledger facts remain unchanged.
 - **PENDING** commit, PR merge, and a fresh verifier run on `main` before the final capture decision.
+
+Case-access guard:
+
+- **PASS** direct case routes require a matching acknowledgement/mobile proof from the Track your Complaint mock OTP flow.
+- **PASS** starting a filing acknowledgement clears that proof and removes `Your Case` from the navigation.
