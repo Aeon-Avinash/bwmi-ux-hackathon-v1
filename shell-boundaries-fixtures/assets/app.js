@@ -1007,7 +1007,7 @@
         '<p class="error" id="trErr" hidden></p>' +
         '<div class="actions-row" style="margin-top:14px">' +
           '<button class="btn big" type="button" data-verify-otp disabled>' + t('track.submit') + '</button></div>' +
-        '<p style="margin-top:18px;font-size:13px;color:var(--muted)">Mock ledger in this prototype: 25082026000147 · 27082026000101 · 18082026000109 · 15082026000112 · REF-260826-0413</p>' +
+        '<p class="demo-ledger-hint" style="margin-top:18px;font-size:13px;color:var(--muted)">Mock ledger in this prototype: 25082026000147 · 27082026000101 · 18082026000109 · 15082026000112 · REF-260826-0413</p>' +
       '</div>',
       { narrow: true });
     var otp = wireOtp(document.getElementById('main'));
@@ -1063,7 +1063,7 @@
           stat('s-held', 'status.held', rec.split.held) +
           stat('s-pend', 'status.requested', rec.split.requested) +
           stat('s-unloc', 'status.unlocated', rec.split.unlocated) +
-          stat('s-ret', 'status.returned', rec.split.returned) +
+          (rec.split.returned ? stat('s-ret', 'status.returned', rec.split.returned) : '') +
         '</div>' +
         '<p class="strip-note">' + p('status.conservation') + ': <span class="tnum">' +
           NCRP.inr(rec.split.held) + ' + ' + NCRP.inr(rec.split.requested) + ' + ' + NCRP.inr(rec.split.unlocated) +
@@ -1071,8 +1071,9 @@
           ' = ' + NCRP.inr(cons.sum) +
           '</span>' +
           (cons.ok ? '' : ' · mismatch') +
-          (rec.split.leak ? ' · ' + p('status.leakNote') : '') +
-        '</p></section>';
+        '</p>' +
+        (rec.split.leak ? '<div class="leak-row tnum">' + p('status.leakNote') + '</div>' : '') +
+        '</section>';
     }
 
     var holds = '';
@@ -1169,7 +1170,7 @@
       events.map(function (e) {
         var prov = e.provenance === 'ASSUMPTION' ? '<span class="prov prov-a">[ASSUMPTION]</span>'
           : e.provenance === 'PROPOSED' ? '<span class="prov prov-p">[PROPOSED]</span>'
-          : '<span class="prov prov-p">CONFIRMED</span>';
+          : '<span class="prov prov-confirmed">CONFIRMED</span>';
         return '<article class="ev"><span class="t">' + esc(NCRP.formatWhenShort(e.at)) + '</span>' +
           '<div class="body"><p class="p">' + esc(e.text) + '</p>' +
           '<div class="meta"><span class="author-chip">● ' + esc(e.author) + '</span>' +
