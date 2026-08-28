@@ -60,3 +60,22 @@ No hold-slip prose sentence was synthesized. These are the exact English-primary
 ## Video Capture Gate
 
 **GO for video capture.** Gates A–G pass on `code-design-parity-smoke-test`; the only remaining item is the accepted cosmetic SMK-003 fallback probe.
+
+## Dispatch F Abbreviated Re-gate
+
+Branch: `dispatch-f/type-normalization`
+Preview: `http://127.0.0.1:8767/`
+
+| Gate | Result | Evidence |
+| --- | --- | --- |
+| Fixture verifier before/after | **PASS** | Both runs reported `OK codes=29 asha=₹98,500 elapsed=36h36m holdAGE=33h07m anon=REF-260826-0413`. |
+| Focus behavior | **PASS** | Mouse language selection left programmatic focus on `main` with `:focus-visible = false`, no outline, and `transition-duration: 0s`; keyboard Tab produced a solid 3px ring with no transition. |
+| Title/type normalization | **PASS** | Home and acknowledgement titles measured 32px/38.4px; tracker measured 28px at 390px. Breadcrumb-to-banner measured 12px and banner-to-title 24px. Body measured 16px and content 1080px at 1440px. |
+| Checklist i18n | **PASS** | Every checklist pack key exists in all 23 packs. Kannada primary rendered 23 bilingual pairs with English secondary and zero fallback underlines. No English-only checklist defect remains. |
+| Named journey | **PASS** | Home → common acknowledgement → login/OTP → 23-pair checklist → complaint → filed; issued `27082026000200`. |
+| Anonymous journey | **PASS** | Common acknowledgement → exact four categories → zero identity fields → confirmation-only `REF-260827-0948`; boundary states that it cannot be tracked. |
+| Track journey | **PASS** | Unknown acknowledgement returned the no-record message with the ledger hint hidden; valid Asha acknowledgement + OTP reached status. |
+| Responsive/errors | **PASS** | Named, anonymous, and tracking stages reported no root overflow at 390×844; browser page-error logs were empty. |
+| Visual evidence | **PASS** | `post-fix-screenshots/dispatch-f/home.png`, `acknowledgement.png`, and `track-390.png` are fresh final captures. |
+
+**Dispatch F decision: GO for video capture.**
