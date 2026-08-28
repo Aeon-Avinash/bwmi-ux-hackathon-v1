@@ -1,19 +1,21 @@
 # Closure Gate
 
-Status: **NO-GO / blocked by locked fixture and displayed-text gaps**
+Status: **GO for video capture**
 
 Gate artifacts:
 
-- `SMOKE_REPORT.md` records the A-G matrix, defect severity, hold-slip comparison, and capture decision.
-- `DESIGN_NOTES.md` records every Phase 1 code change.
-- `post-fix-screenshots/` contains the five requested visual captures.
+- `SMOKE_REPORT.md` records the A-G matrix, severity, verbatim event rows, and capture decision.
+- `DESIGN_NOTES.md` records the complete design/data/verifier change log.
+- `post-fix-screenshots/` contains the five requested final captures.
 
 Gate results:
 
-- **PASS** `node shell-boundaries-fixtures/assets/verify-fixtures.mjs` -> 29 codes, ₹98,500, 36h36m, 33h07m, `REF-260826-0413`.
-- **PASS** syntax checks for `app.js`, `i18n.js`, and `ledger.js`.
-- **PASS** `git diff --check`.
-- **PASS** locked-surface diff review -> no changes under `shell-boundaries-fixtures/data/` or `multilingual-packs/`.
-- **PASS** five PNG captures validated as non-empty RGB images; browser inspection confirmed rendered content.
-- **PASS** named, anonymous, tracker/no-record, Kannada, Odia, Urdu RTL, desktop, and 390px browser walks with no page errors.
-- **NO-GO** SMK-001 and SMK-002 in `SMOKE_REPORT.md` require operator-authorized locked-surface changes.
+- **PASS** strengthened fixture verifier: exact three debit rows, ₹98,500 conservation, ₹500 leak, 36h36m, 33h07m, and canonical references.
+- **PASS** JavaScript syntax checks for `app.js`, `i18n.js`, `ledger.js`, and `verify-fixtures.mjs`.
+- **PASS** state canon: byte-identical lane files, exact 25 state codes plus four clock badges, no retired codes.
+- **PASS** named, anonymous, no-record, and valid-OTP journeys with empty browser page-error logs.
+- **PASS** 23 locale packs, Kannada full walk, Odia spot check, Urdu RTL walk, Latin digits, persistence, local fonts, and offline in-app navigation.
+- **PASS** 26-route 390px and 1440px sweeps with no overflow and complete shared chrome.
+- **PASS** key contrast samples: minimum measured ratio 5.48:1.
+- **PASS** five non-empty screenshots regenerated after the final changes.
+- **PASS** scope review: only the explicitly authorized `ledger.json` event replacement touched a locked surface; strings, codes, and `multilingual-packs/` remain unchanged.
