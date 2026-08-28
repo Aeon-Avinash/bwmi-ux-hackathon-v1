@@ -93,7 +93,23 @@
           "author": "Saral Bank · SMS",
           "code": "REPORTED",
           "provenance": "CONFIRMED",
-          "text": "₹98,500 debited from A/c ••4821 by UPI to kubertraders@dvb.",
+          "text": "₹31,000 debited from A/c ••4821 by UPI to kubertraders@dvb.",
+          "band": "confirmed"
+        },
+        {
+          "at": "2026-08-25T21:14:00+05:30",
+          "author": "Saral Bank · SMS",
+          "code": "REPORTED",
+          "provenance": "CONFIRMED",
+          "text": "₹42,500 debited from A/c ••4821 by UPI to kubertraders@dvb.",
+          "band": "confirmed"
+        },
+        {
+          "at": "2026-08-25T21:19:00+05:30",
+          "author": "Saral Bank · SMS",
+          "code": "REPORTED",
+          "provenance": "CONFIRMED",
+          "text": "₹25,000 debited from A/c ••4821 by UPI to kubertraders@dvb.",
           "band": "confirmed"
         },
         {

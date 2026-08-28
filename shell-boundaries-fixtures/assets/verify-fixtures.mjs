@@ -36,6 +36,10 @@ if (strings.anonForm.catCseam !== 'CSEAM – Child Sexual Exploitative & Abuse M
 
 const now = ledger.$meta.now;
 function rec(id) { return ledger.records.find((r) => r.id === id); }
+function amountPaise(text) {
+  const match = String(text).match(/₹([\d,]+)/);
+  return match ? Number(match[1].replace(/,/g, '')) * 100 : NaN;
+}
 
 const asha = rec('asha-day2');
 if (!asha) fail('Asha record missing');
@@ -48,6 +52,28 @@ else {
   if (s.unlocated !== 2500000) fail('Asha unlocated locked at ₹25,000');
   if (s.leak !== 50000) fail('Asha ₹500 leak missing');
   if (sum !== 9850000) fail('Asha conservation broken: ' + sum);
+  const debitRows = asha.events.filter((event) =>
+    event.code === 'REPORTED' && event.author === 'Saral Bank · SMS'
+  );
+  const expectedDebits = [
+    ['2026-08-25T21:12:00+05:30', '₹31,000 debited from A/c ••4821 by UPI to kubertraders@dvb.', 3100000],
+    ['2026-08-25T21:14:00+05:30', '₹42,500 debited from A/c ••4821 by UPI to kubertraders@dvb.', 4250000],
+    ['2026-08-25T21:19:00+05:30', '₹25,000 debited from A/c ••4821 by UPI to kubertraders@dvb.', 2500000]
+  ];
+  if (debitRows.length !== expectedDebits.length) {
+    fail('Asha expected exactly three debit rows, got ' + debitRows.length);
+  }
+  expectedDebits.forEach(([at, text, amount], index) => {
+    const row = debitRows[index];
+    if (!row) return;
+    if (row.at !== at) fail('Asha debit ' + (index + 1) + ' timestamp expected ' + at + ', got ' + row.at);
+    if (row.text !== text) fail('Asha debit ' + (index + 1) + ' text mismatch');
+    if (amountPaise(row.text) !== amount) fail('Asha debit ' + (index + 1) + ' amount mismatch');
+  });
+  const debitTotal = debitRows.reduce((total, row) => total + amountPaise(row.text), 0);
+  if (debitTotal !== asha.totalPaise) {
+    fail('Asha debit rows do not sum to TOTAL REPORTED: ' + debitTotal + ' != ' + asha.totalPaise);
+  }
   const elapsedMs = Date.parse(now) - Date.parse(asha.theftAt);
   const ageMs = Date.parse(now) - Date.parse('2026-08-26T00:41:00+05:30');
   const elapsedH = elapsedMs / 3600000;
