@@ -129,7 +129,8 @@
   }
 
   function navItems(route) {
-    var viewed = session().viewedAck;
+    var access = session().trackAccess;
+    var viewed = access && access.ack;
     var items = [
       { href: '#/', key: 'chrome.navHome', match: '/' },
       { href: '#/register', key: 'chrome.navRegister', match: '/register' },
@@ -388,7 +389,8 @@
 
   function acknowledge(route) {
     var track = route.q.track || 'financial';
-    saveSession({ track: track });
+    /* Starting a filing is separate from the seeded-case tracking drill. */
+    saveSession({ track: track, viewedAck: null, trackAccess: null });
     page(route, [
       { href: '#/', key: 'chrome.crumbHome' },
       { href: '#/register', key: 'chrome.navRegister' },
@@ -1141,15 +1143,20 @@
       var last = session().lastOtp;
       if (!last || last.purpose !== 'track' || last.ack !== ack) { showErr(err, t('login.otpMissing')); return; }
       if (otp.value() !== last.code) { showErr(err, t('track.otpWrong')); return; }
-      saveSession({ viewedAck: ack });
+      saveSession({
+        viewedAck: ack,
+        trackAccess: { ack: ack, mobile: mob, verifiedAt: Date.now() }
+      });
       go('#/status?ack=' + encodeURIComponent(ack));
     });
   }
 
   function status(route) {
-    var ack = route.q.ack || session().viewedAck;
+    var access = session().trackAccess;
+    var ack = route.q.ack || (access && access.ack);
+    if (!access || !ack || access.ack !== ack) { go('#/track'); return; }
     var rec = NCRP.findByAck(ack);
-    if (!rec) { go('#/track'); return; }
+    if (!rec || rec.mobile !== access.mobile) { go('#/track'); return; }
     if (rec.boundary === 'CONFIRMATION_ONLY') {
       page(route, [{ href: '#/', label: t('chrome.crumbHome') }, { label: t('track.title') }],
         '<div class="boundary-note">' + t('track.anonBoundary') + '</div>' +
@@ -1157,7 +1164,6 @@
         { narrow: true });
       return;
     }
-    saveSession({ viewedAck: rec.ack });
     var now = NCRP.store.now;
     var day = NCRP.dayIndex(rec.filedAt, now);
     var elapsedFrom = rec.theftAt || rec.filedAt;
