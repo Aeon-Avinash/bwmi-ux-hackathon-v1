@@ -10,4 +10,3 @@
 - `shell-boundaries-fixtures/assets/shell.css` -> added 390px containment for masthead, nav, forms, OTP, event rows, footer, and long clock chips -> remove journey-level horizontal overflow without shrinking text.
 - `shell-boundaries-fixtures/assets/shell.css` -> kept RTL regional lines right-directed while isolating amounts, codes, clocks, and numerals LTR -> support Urdu/Kashmiri/Sindhi without reversing numeric facts.
 - `shell-boundaries-fixtures/assets/shell.css` -> stopped forcing regional leak/footer text through the monospace stack -> prevent missing-script glyph boxes while retaining tabular numerals.
-
